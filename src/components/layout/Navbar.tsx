@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { NAV_ITEMS } from "@/src/constants/navigation";
-import { Button } from "@/src/components/ui/button";
+// import { NAV_ITEMS } from "./../src/constants/navigation";
+import { NAV_ITEMS } from "@/constants/navigation";
+import { Button } from "@/components/ui/button";
 export default function Navbar() {
   return (
     <nav className="border-b">
@@ -21,9 +22,9 @@ export default function Navbar() {
         </div> */}
 <div className="flex gap-6"> 
   <a href="/">Home</a> 
-  <a href="/funding-opportunities"> Funding </a> 
-  <a href="/proposal-center"> Proposal Center </a> 
-  <a href="/training-academy"> Academy </a> 
+  <a href="/fundingOpportunities"> Funding </a> 
+  <a href="/proposalCenter"> Proposal Center </a> 
+  <a href="/trainingAcademy"> Academy </a> 
   <a href="/membership"> Membership </a> 
   <a href="/contact"> Contact </a>
 

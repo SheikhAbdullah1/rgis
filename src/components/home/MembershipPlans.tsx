@@ -1,4 +1,4 @@
-import { memberships } from "@/src/data/memberships";
+import { memberships } from "@/data/memberships";
 
 export default function MembershipPlans() {
   return (
