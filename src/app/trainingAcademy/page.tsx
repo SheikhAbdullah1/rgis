@@ -1,9 +1,19 @@
+import Categories from "@/components/training/Categories";
+import Courses from "@/components/training/Courses";
+import WhyChoose from "@/components/training/WhyChoose";
+import Stats from "@/components/training/Stats";
+import Instructors from "@/components/training/Instructors";
+import CTA from "@/components/training/CTA";
+
 export default function TrainingAcademyPage() {
-    return (
-      <div className="max-w-7xl mx-auto py-20">
-        <h1 className="text-4xl font-bold">
-          Training Academy
-        </h1>
-      </div>
-    );
-  }
+  return (
+    <main>
+      <Categories />
+      <Courses />
+      <WhyChoose />
+      <Stats />
+      <Instructors />
+      <CTA />
+    </main>
+  );
+}

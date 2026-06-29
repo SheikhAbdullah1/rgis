@@ -1,0 +1,35 @@
+const sdgNames = [
+"No Poverty",
+"Zero Hunger",
+"Good Health",
+"Quality Education",
+"Gender Equality",
+"Clean Water",
+"Clean Energy",
+"Decent Work",
+"Industry & Innovation",
+"Reduced Inequalities",
+"Sustainable Cities",
+"Responsible Consumption",
+"Climate Action",
+"Life Below Water",
+"Life On Land",
+"Peace & Justice",
+"Partnerships",
+];
+
+
+
+Final Project Roadmap
+✔ Proposal Submission
+✔ File Upload
+✔ MongoDB Storage
+✔ Tracking ID Generation
+⬜ Proposal Tracking
+⬜ Admin Dashboard
+⬜ Status Management
+⬜ Email Notifications
+⬜ Admin Authentication
+⬜ Analytics Dashboard
+
+Meri recommendation: ab seedha Proposal Tracking System complete karo, phir Admin Dashboard banate hain. Yeh dono milkar tumhara RGIS ka core workflow complete kar denge. 🚀

@@ -1,66 +1,83 @@
-// "use client";
 "use client";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-type Props = {
-  selectedSDG: number | null;
-};
-
-export default function ProposalForm({
-  selectedSDG,
-}: Props) {
+export default function ProposalForm() {
   
   const [proposalFile, setProposalFile] =
     useState<File | null>(null);
 
-  const [mediaFiles, setMediaFiles] =
-    useState<File[]>([]);
-
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-//   const validateForm = () => {
-//     const newErrors: Record<string, string> = {};
-  
-//     if (!proposalFile)
-//       newErrors.proposalFile =
-//         "Proposal document is required.";
-  
-//     setErrors(newErrors);
-  
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (loading) return;
+    
+    if (!validateForm()) {
+      toast.error(
+        "Please complete all required fields and upload the proposal document."
+      );
+      return;
+    }
   
-    if (!validateForm()) return;
+    setLoading(true);  
   
-    const proposalData = {
-        ...formData,
-        selectedSDG,
-      };
-
     try {
-      const res = await fetch(
-        "/api/proposals",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(
-            proposalData
-          ),
+    const form = new FormData();
+
+    Object.entries(formData).forEach(
+    ([key, value]) => {
+    form.append(key, value);
+    }
+    );
+    
+    if (proposalFile) {
+    form.append(
+    "proposalFile",
+    proposalFile
+    );
+    }
+    
+    const res = await fetch(
+    "/api/proposals",
+    {
+    method: "POST",
+    body: form,
+    }
+    );
+           
+        const data = await res.json();
+        setSuccess(true);
+        toast.success(data.message);
+        
+        // form reset
+        setFormData({
+        role: "",
+        submissionType: "",
+        // file;""
+        title: "",
+        funding: "",
+        description: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        cnic: "",
+        country: "",
+        website: "",
+        organization: "",
         });
-  
-      const data = await res.json();
-  
-      alert(data.message);
+        
+        setProposalFile(null);
+        setErrors({});
+        
     } catch (error) {
-      alert("Submission failed.");
+      toast.error(
+        "Submission failed."
+      );
     }
     finally {
         setLoading(false);
@@ -97,10 +114,10 @@ const handleSubmit = async (
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-  
+
     if (!formData.role)
       newErrors.role = "Role is required.";
-  
+    
     if (!formData.submissionType)
       newErrors.submissionType =
         "Submission type is required.";
@@ -134,12 +151,10 @@ const handleSubmit = async (
         "Proposal document is required.";
   
     setErrors(newErrors);
-  
     return Object.keys(newErrors).length === 0;
   };
 
-  const [loading, setLoading] =
-  useState(false);
+
   
   return (
     <div>
@@ -148,22 +163,10 @@ const handleSubmit = async (
         <h2 className="text-2xl font-bold mb-6">
           Submit Proposal
         </h2>
-  
-        {/* SDG */}
-        <div className="mb-6 rounded-lg bg-blue-50 p-4">
-          <p className="font-semibold">
-            Selected SDG Goal:
-          </p>
-  
-          <p>
-            {selectedSDG
-              ? `Goal ${selectedSDG}`
-              : "No Goal Selected"}
-          </p>
-        </div>
-  
-        {/* FORM START */}
-        <form className="space-y-6" onSubmit={handleSubmit}>
+
+ 
+          {/* FORM START */}
+        <form className="space-y-6" onSubmit={handleSubmit} autoComplete="off">
   
           {/* Role */}
           <div>
@@ -187,6 +190,11 @@ const handleSubmit = async (
                 </select>
           </div>
   
+          {errors.role && (
+  <p className="text-red-500 text-sm">
+    {errors.role}
+  </p>
+)}
           {/* Submission Type */}
           <div>
             <label className="block mb-2 font-medium">
@@ -220,7 +228,6 @@ const handleSubmit = async (
                 </option>
                 </select>
           </div>
-        
 
           {/* Proposal Title */}
           <input
@@ -278,8 +285,7 @@ const handleSubmit = async (
                     {errors.proposalFile}
                 </p>
                 )}
-
-
+                
           {/* Applicant */}
           <div className="border-t pt-6">
             <h3 className="text-xl font-semibold mb-4">
@@ -287,7 +293,7 @@ const handleSubmit = async (
             </h3>
   
             <div className="grid md:grid-cols-2 gap-4">
-  
+            <div>
             <input
                 type="text"
                 name="fullName"
@@ -296,7 +302,9 @@ const handleSubmit = async (
                 placeholder="Full Name"
                 className="border rounded-lg p-3"
                 />
-  
+                </div>
+
+                <div>
                 <input
                 type="email"
                 name="email"
@@ -310,7 +318,9 @@ const handleSubmit = async (
                         {errors.email}
                     </p>
                     )}
+                </div>
 
+                <div>
                 <input
                 type="text"
                 name="phone"
@@ -319,7 +329,14 @@ const handleSubmit = async (
                 placeholder="Phone Number"
                 className="border rounded-lg p-3"
                 />
-                
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">
+                  {errors.phone}
+                </p>
+              )}
+              </div>
+
+              <div>
                 <input
                 type="text"
                 name="cnic"
@@ -329,13 +346,14 @@ const handleSubmit = async (
                 pattern="[0-9]{5}-[0-9]{7}-[0-9]"
                 className="border rounded-lg p-3"
                 />
-                
                 {errors.cnic && (
-                    <p className="text-red-500 text-sm">
+                  <p className="text-red-500 text-sm">
                         {errors.cnic}
                     </p>
                     )}
+                </div>
 
+                <div>
                 <input
                 type="text"
                 name="country"
@@ -344,7 +362,13 @@ const handleSubmit = async (
                 placeholder="Country"
                 className="border rounded-lg p-3"
                 />
-                
+                {errors.country && (
+                  <p className="text-red-500 text-sm">
+                        {errors.country}
+                    </p>
+                    )}
+     </div>
+     <div>          
                 <input
                 type="text"
                 name="website"
@@ -353,7 +377,8 @@ const handleSubmit = async (
                 placeholder="Website / LinkedIn"
                 className="border rounded-lg p-3"
                 />
-                
+          </div> 
+          <div>      
                 <input
                 type="text"
                 name="organization"
@@ -362,7 +387,7 @@ const handleSubmit = async (
                 placeholder="Institution / Organization"
                 className="border rounded-lg p-3 md:col-span-2"
                 />
-  
+             </div>
             </div>
           </div>
   

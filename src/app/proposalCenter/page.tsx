@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import SDGSpinner from "@/components/proposal/SDGSpinner";
 import ProposalForm from "@/components/proposal/ProposalForm";
-
+import ProposalGuidelines from "@/components/proposal/ProposalGuidelines";
 export default function ProposalCenterPage() {
-  const [selectedSDG, setSelectedSDG] = useState<number | null>(null);
+
+  const [formCompleted, setFormCompleted] =
+    useState(false);
 
   return (
     <main className="max-w-7xl mx-auto p-6">
@@ -14,12 +15,10 @@ export default function ProposalCenterPage() {
       </h1>
 
       <div className="grid lg:grid-cols-2 gap-10">
-        <SDGSpinner
-          selectedSDG={selectedSDG}
-          setSelectedSDG={setSelectedSDG}
-        />
-
-        <ProposalForm selectedSDG={selectedSDG} />
+      <ProposalForm
+        setFormCompleted={setFormCompleted}
+      />
+      <ProposalGuidelines />
       </div>
     </main>
   );
