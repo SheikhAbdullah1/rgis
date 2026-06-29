@@ -1,10 +1,11 @@
   "use client";
 
-  import { useState } from "react";
+  import { useState, Dispatch, SetStateAction} from "react";
   import toast from "react-hot-toast";
 
   interface ProposalFormProps {
-    setFormCompleted?: (value: boolean) => void;
+    // setFormCompleted?: (value: boolean) => void;
+    setFormCompleted: Dispatch<SetStateAction<boolean>>;
   }
 
   export default function ProposalForm({ setFormCompleted }: ProposalFormProps) {
