@@ -5,5 +5,6 @@ export default function AdminProposalsPage() {
       <h1 className="text-3xl font-bold mb-6">Manage Proposals</h1>
       <AdminProposalTable />
     </main>
+    
   );
 }
