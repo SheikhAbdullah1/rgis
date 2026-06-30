@@ -3,6 +3,12 @@ import FeatureTable from "@/components/membership/FeatureTable";
 import FAQ from "@/components/membership/FAQ";
 import CTA from "@/components/membership/CTA";
 // import Hero from "@/components/ui/PageHero"
+import type { Metadata } from "next"; 
+
+export const metadata: Metadata = { 
+  title: "Contact Us", 
+  description: "Contact the Research Grant Intelligence System team.", 
+};
 
 export default function MembershipPage() {
   return (

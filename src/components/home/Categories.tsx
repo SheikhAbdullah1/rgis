@@ -1,70 +1,101 @@
+import Link from "next/link";
+import {
+  GraduationCap,
+  Briefcase,
+  Lightbulb,
+  Globe,
+  Landmark,
+  Award,
+} from "lucide-react";
+
 const categories = [
   {
     title: "Research Grants",
-    description: "Funding for academic and scientific research.",
-    icon: "🔬",
-  },
-  {
-    title: "Innovation Grants",
-    description: "Support for innovative technologies and ideas.",
-    icon: "💡",
+    description:
+      "Funding opportunities for research projects and scientific innovation.",
+    icon: Briefcase,
   },
   {
     title: "Scholarships",
-    description: "Educational funding for students worldwide.",
-    icon: "🎓",
+    description:
+      "Scholarships for undergraduate, postgraduate, and doctoral studies.",
+    icon: GraduationCap,
   },
   {
     title: "Fellowships",
-    description: "Research and professional fellowship programs.",
-    icon: "🏅",
+    description:
+      "National and international fellowship programs for researchers.",
+    icon: Award,
   },
   {
     title: "Startup Funding",
-    description: "Funding opportunities for startups.",
-    icon: "🚀",
+    description:
+      "Seed funding, incubation, and entrepreneurship opportunities.",
+    icon: Lightbulb,
   },
   {
-    title: "Venture Capital",
-    description: "Investment opportunities for growing businesses.",
-    icon: "💰",
+    title: "Government Grants",
+    description:
+      "Funding programs offered by government organizations and agencies.",
+    icon: Landmark,
   },
   {
-    title: "Angel Investment",
-    description: "Private investment opportunities.",
-    icon: "👨‍💼",
-  },
-  {
-    title: "Research Awards",
-    description: "Awards recognizing outstanding research.",
-    icon: "🏆",
+    title: "International Funding",
+    description:
+      "Global funding opportunities from international organizations.",
+    icon: Globe,
   },
 ];
 
 export default function Categories() {
   return (
-    <section className="max-w-7xl mx-auto py-20 px-6">
-      <h2 className="text-3xl font-bold text-center mb-10">
-        Funding Categories
-      </h2>
+    <section className="bg-gray-50 py-20">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold">
+            Funding Categories
+          </h2>
 
-      <div className="grid md:grid-cols-4 gap-6">
-        {categories.map((category) => (
-          <div
-            key={category.title}
-            className="border rounded-xl p-6 hover:shadow-lg transition"
-          >
-            <div className="text-4xl mb-4">{category.icon}</div>
+          <p className="mt-4 text-lg text-gray-600">
+            Explore different categories of funding opportunities
+            available through RGIS.
+          </p>
+        </div>
 
-            <h3 className="text-xl font-semibold mb-2">
-              {category.title}
-            </h3>
+        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category) => {
+            const Icon = category.icon;
 
-            <p className="text-gray-600">
-              {category.description}
-            </p>
-          </div>
-        ))}
+            return (
+              <Link
+                key={category.title}
+                href="/fundingOpportunities"
+                className="
+                  rounded-2xl
+                  border
+                  bg-white
+                  p-8
+                  shadow-sm
+                  transition
+                  hover:-translate-y-2
+                  hover:shadow-lg
+                "
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                  <Icon size={30} />
+                </div>
+
+                <h3 className="mt-6 text-2xl font-bold">
+                  {category.title}
+                </h3>
+
+                <p className="mt-4 text-gray-600">
+                  {category.description}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

@@ -1,30 +1,30 @@
 type GrantCardProps = {
   title: string;
-  organization: string;
+  agency: string;
   amount: string;
   deadline: string;
-  category: string;
+  // category: string;
 };
 
 export default function GrantCard({
   title,
-  organization,
+  agency,
   amount,
   deadline,
-  category,
+  // category,
 }: GrantCardProps) {
   return (
     <div className="rounded-xl border p-6 shadow-sm transition hover:shadow-lg">
-      <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-600">
+      {/* <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-600">
         {category}
-      </span>
+      </span> */}
 
       <h3 className="mt-4 text-xl font-bold">
         {title}
       </h3>
 
       <p className="mt-2 text-gray-600">
-        {organization}
+        {agency}
       </p>
 
       <div className="mt-4 space-y-2 text-sm text-gray-500">

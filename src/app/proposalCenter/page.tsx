@@ -3,8 +3,14 @@
 import { useState } from "react";
 import ProposalForm from "@/components/proposal/ProposalForm";
 import ProposalGuidelines from "@/components/proposal/ProposalGuidelines";
-export default function ProposalCenterPage() {
+// import type { Metadata } from "next"; 
+// export const metadata: Metadata = { 
+//   title: "Contact Us", 
+//   description: "Contact the Research Grant Intelligence System team.", 
+// };
 
+export default function ProposalCenterPage() {
+  
   const [formCompleted, setFormCompleted] =
     useState(false);
 
@@ -23,3 +29,4 @@ export default function ProposalCenterPage() {
     </main>
   );
 }
+

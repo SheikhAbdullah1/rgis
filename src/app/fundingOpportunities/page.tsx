@@ -1,6 +1,11 @@
 import Filters from "@/components/funding/Filters";
 import SearchBar from "@/components/funding/SearchBar";
 import GrantGrid from "@/components/funding/GrantGrid";
+import type { Metadata } from "next"; 
+export const metadata: Metadata = { 
+  title: "Contact Us", 
+  description: "Contact the Research Grant Intelligence System team.", 
+};
 
 export default function FundingPage() {
   return (

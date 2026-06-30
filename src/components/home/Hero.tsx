@@ -1,112 +1,127 @@
-import { Search } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-24">
-      <div className="max-w-7xl mx-auto px-6">
-
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-
-          {/* Left */}
-
+    <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-700 to-indigo-700 text-white">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:py-36">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          {/* Left Content */}
           <div>
-
-            <span className="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-medium mb-6">
-              AI Powered Research Funding Platform
+            <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium">
+              Research Grant Intelligence System (RGIS)
             </span>
 
-            <h1 className="text-5xl font-extrabold leading-tight">
-              Discover Global
-              <span className="text-blue-600">
-                {" "}Research Grants
-              </span>
+            <h1 className="mt-8 text-5xl font-bold leading-tight lg:text-6xl">
+              Discover Funding.
               <br />
-              and Funding Opportunities
+              Develop Proposals.
+              <br />
+              Transform Research.
             </h1>
 
-            <p className="mt-6 text-lg text-gray-600 leading-8">
-              Search thousands of grants, fellowships,
-              scholarships and innovation funding from
-              leading agencies across the world.
+            <p className="mt-8 max-w-2xl text-lg text-blue-100">
+              RGIS is a comprehensive funding intelligence
+              platform connecting researchers, startups,
+              universities, NGOs, and innovators with grants,
+              scholarships, fellowships, and funding
+              opportunities worldwide.
             </p>
 
-            {/* Search */}
+            {/* CTA Buttons */}
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link
+                href="/fundingOpportunities"
+                className="
+                  rounded-xl
+                  bg-white
+                  px-6
+                  py-3
+                  font-semibold
+                  text-blue-700
+                  transition
+                  hover:bg-gray-100
+                "
+              >
+                Explore Funding
+              </Link>
 
-            <div className="mt-10 flex bg-white rounded-xl shadow-lg overflow-hidden">
+              <Link
+                href="/proposalCenter"
+                className="
+                  rounded-xl
+                  border
+                  border-white
+                  px-6
+                  py-3
+                  font-semibold
+                  transition
+                  hover:bg-white
+                  hover:text-blue-700
+                "
+              >
+                Submit Proposal
+              </Link>
 
-              <input
-                type="text"
-                placeholder="Search grants, agencies, keywords..."
-                className="flex-1 px-5 py-4 outline-none"
-              />
-
-              <button className="bg-blue-600 hover:bg-blue-700 px-8 text-white flex items-center gap-2">
-                <Search size={18} />
-                Search
-              </button>
-
+              <Link
+                href="/membership"
+                className="
+                  rounded-xl
+                  bg-blue-500
+                  px-6
+                  py-3
+                  font-semibold
+                  transition
+                  hover:bg-blue-400
+                "
+              >
+                Become a Member
+              </Link>
             </div>
-
-            {/* Stats */}
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-
-              <div>
-                <h2 className="text-3xl font-bold text-blue-600">
-                  10K+
-                </h2>
-                <p className="text-gray-500">
-                  Grants
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-3xl font-bold text-blue-600">
-                  500+
-                </h2>
-                <p className="text-gray-500">
-                  Agencies
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-3xl font-bold text-blue-600">
-                  120+
-                </h2>
-                <p className="text-gray-500">
-                  Countries
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-3xl font-bold text-blue-600">
-                  AI
-                </h2>
-                <p className="text-gray-500">
-                  Matching
-                </p>
-              </div>
-
-            </div>
-
           </div>
 
-          {/* Right */}
+          {/* Right Side */}
+          <div className="grid grid-cols-2 gap-6">
+            <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
+              <h3 className="text-4xl font-bold">
+                500+
+              </h3>
 
-          <div className="flex justify-center">
-
-            <div className="w-full max-w-md h-[450px] rounded-3xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-2xl flex items-center justify-center">
-
-              <h2 className="text-white text-3xl font-bold">
-                RGIS
-              </h2>
-
+              <p className="mt-2 text-blue-100">
+                Funding Opportunities
+              </p>
             </div>
 
-          </div>
+            <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
+              <h3 className="text-4xl font-bold">
+                100+
+              </h3>
 
+              <p className="mt-2 text-blue-100">
+                Funding Agencies
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
+              <h3 className="text-4xl font-bold">
+                1000+
+              </h3>
+
+              <p className="mt-2 text-blue-100">
+                Researchers Connected
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
+              <h3 className="text-4xl font-bold">
+                50+
+              </h3>
+
+              <p className="mt-2 text-blue-100">
+                Training Programs
+              </p>
+            </div>
+          </div>
         </div>
-
       </div>
     </section>
   );

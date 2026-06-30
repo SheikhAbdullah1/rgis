@@ -6,12 +6,12 @@ export default function GrantGrid() {
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {grants.map((grant) => (
         <GrantCard
-          key={grant.id}
+          // key={grant.id}
           title={grant.title}
-          organization={grant.organization}
+          agency={grant.agency}
           amount={grant.amount}
           deadline={grant.deadline}
-          category={grant.category}
+          // category={grant.category}
         />
       ))}
     </div>

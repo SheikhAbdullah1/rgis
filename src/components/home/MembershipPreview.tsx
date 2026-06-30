@@ -1,32 +1,25 @@
 import Link from "next/link";
-import {
-  Calendar,
-  Globe,
-  Building2,
-  Wallet,
-} from "lucide-react";
+import { Users } from "lucide-react";
+import { memberships } from "@/data/memberships";
 
-import { grants } from "@/data/grants";
-
-export default function FeaturedGrants() {
+export default function MembershipPreview() {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
           <div>
             <h2 className="text-4xl font-bold">
-              Featured Funding Opportunities
+              Become an RGIS Member
             </h2>
 
             <p className="mt-4 text-lg text-gray-600">
-              Discover some of the latest grants and
-              funding opportunities available through
-              RGIS.
+              Join our growing community of researchers,
+              innovators, institutions, and funding experts.
             </p>
           </div>
 
           <Link
-            href="/fundingOpportunities"
+            href="/membership"
             className="
               rounded-xl
               bg-blue-600
@@ -38,14 +31,14 @@ export default function FeaturedGrants() {
               hover:bg-blue-700
             "
           >
-            View All Opportunities
+            View Membership
           </Link>
         </div>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-3">
-          {grants.map((grant) => (
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {memberships.map((membership) => (
             <div
-              key={grant.id}
+              key={membership.id}
               className="
                 rounded-2xl
                 border
@@ -57,34 +50,24 @@ export default function FeaturedGrants() {
                 hover:shadow-lg
               "
             >
-              <h3 className="text-2xl font-bold">
-                {grant.title}
-              </h3>
-
-              <div className="mt-8 space-y-4">
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Building2 size={18} />
-                  {grant.agency}
-                </div>
-
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Globe size={18} />
-                  {grant.country}
-                </div>
-
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Wallet size={18} />
-                  {grant.amount}
-                </div>
-                
-                <div className="flex items-center gap-3 text-gray-600">
-                  <Calendar size={18} />
-                  {grant.deadline}
-                </div>
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                <Users size={30} />
               </div>
 
+              <h3 className="mt-6 text-2xl font-bold">
+                {membership.title}
+              </h3>
+
+              <p className="mt-3 text-blue-600 font-semibold">
+                {membership.price}
+              </p>
+
+              <p className="mt-4 text-gray-600">
+                {membership.description}
+              </p>
+
               <Link
-                href="/fundingOpportunities"
+                href="/membership"
                 className="
                   mt-8
                   inline-block
@@ -98,7 +81,7 @@ export default function FeaturedGrants() {
                   hover:bg-blue-700
                 "
               >
-                View Details
+                Join Now
               </Link>
             </div>
           ))}

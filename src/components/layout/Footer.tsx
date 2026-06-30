@@ -44,7 +44,7 @@ export default function Footer() {
           <h3 className="font-semibold mb-4">Contact</h3>
 
           <ul className="space-y-2 text-slate-400">
-            <li>Email: info@rgis.ai</li>
+            <li>Email: info@rgis.org</li>
             <li>Phone: +92 300 1234567</li>
             <li>Pakistan</li>
           </ul>

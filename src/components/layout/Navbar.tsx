@@ -1,45 +1,77 @@
-import Link from "next/link";
-// import { NAV_ITEMS } from "./../src/constants/navigation";
-import { NAV_ITEMS } from "@/constants/navigation";
-import { Button } from "@/components/ui/button";
-export default function Navbar() {
-  return (
-    <nav className="border-b">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        
-        <h1 className="text-xl font-bold">RGIS</h1>
+"use client";
 
-        {/* <div className="flex items-center gap-6">
-          {NAV_ITEMS.map((item) => (
+import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Funding", href: "/fundingOpportunities" },
+    { label: "Proposal Center", href: "/proposalCenter" },
+    { label: "Academy", href: "/trainingAcademy" },
+    { label: "Membership", href: "/membership" },
+    { label: "Contact", href: "/contact" },
+  ];
+
+  return (
+    <nav className="border-b bg-white sticky top-0 z-50">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="text-2xl font-bold text-blue-600"
+        >
+          RGIS
+        </Link>
+
+        {/* Desktop Menu */}
+        <div className="hidden items-center gap-8 lg:flex">
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium hover:text-blue-600 transition"
+              className="text-sm font-medium transition hover:text-blue-600"
             >
               {item.label}
             </Link>
           ))}
-        </div> */}
-<div className="flex gap-6"> 
-  <a href="/">Home</a> 
-  <a href="/fundingOpportunities"> Funding </a> 
-  <a href="/proposalCenter"> Proposal Center </a> 
-  <a href="/trainingAcademy"> Academy </a> 
-  <a href="/membership"> Membership </a> 
-  <a href="/contact"> Contact </a>
-
-
-        {/* <div className="flex gap-3"> */}
-          <button className="px-4 py-2 border rounded-md">
-            Login
-          </button>
-
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
-            Register
-          </button>
         </div>
 
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="lg:hidden"
+        >
+          {open ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {open && (
+        <div className="border-t bg-white lg:hidden">
+          <div className="flex flex-col px-6 py-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="
+                  border-b
+                  py-4
+                  text-sm
+                  font-medium
+                  hover:text-blue-600
+                "
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
