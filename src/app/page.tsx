@@ -12,6 +12,7 @@ import NewsEvents from "@/components/home/NewsEvents";
 import Partners from "@/components/home/Partners";
 import CTA from "@/components/home/CTA";
 
+
 export default function HomePage() {
   return (
     <main>

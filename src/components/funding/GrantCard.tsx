@@ -1,44 +1,34 @@
-type GrantCardProps = {
+interface GrantCardProps {
   title: string;
   agency: string;
   amount: string;
   deadline: string;
-  // category: string;
-};
+}
 
 export default function GrantCard({
   title,
   agency,
   amount,
   deadline,
-  // category,
 }: GrantCardProps) {
   return (
-    <div className="rounded-xl border p-6 shadow-sm transition hover:shadow-lg">
-      {/* <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-600">
-        {category}
-      </span> */}
+    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+      <h3 className="text-xl font-bold">{title}</h3>
 
-      <h3 className="mt-4 text-xl font-bold">
-        {title}
-      </h3>
-
-      <p className="mt-2 text-gray-600">
-        {agency}
+      <p className="mt-3 text-gray-600">
+        Agency: {agency}
       </p>
 
-      <div className="mt-4 space-y-2 text-sm text-gray-500">
-        <p>
-          <strong>Funding:</strong> {amount}
-        </p>
+      <p className="text-gray-600">
+        Amount: {amount}
+      </p>
 
-        <p>
-          <strong>Deadline:</strong> {deadline}
-        </p>
-      </div>
+      <p className="text-gray-600">
+        Deadline: {deadline}
+      </p>
 
-      <button className="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-        View Details
+      <button className="mt-6 w-full rounded-lg bg-blue-600 py-3 text-white">
+        Apply Now
       </button>
     </div>
   );

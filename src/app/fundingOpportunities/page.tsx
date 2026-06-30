@@ -1,22 +1,85 @@
-import Filters from "@/components/funding/Filters";
+"use client";
+
+import { useMemo, useState } from "react";
+
+import Hero from "@/components/funding/Hero";
 import SearchBar from "@/components/funding/SearchBar";
+import Filters from "@/components/funding/Filters";
+import Categories from "@/components/funding/Categories";
+import Statistics from "@/components/funding/Statistics";
 import GrantGrid from "@/components/funding/GrantGrid";
-import type { Metadata } from "next"; 
-export const metadata: Metadata = { 
-  title: "Contact Us", 
-  description: "Contact the Research Grant Intelligence System team.", 
-};
+import AgencySection from "@/components/funding/AgencySection";
+import CTA from "@/components/funding/CTA";
+
+import { grants } from "@/data/grants";
 
 export default function FundingPage() {
-  return (
-    <main className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">
-        Funding Opportunities
-      </h1>
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All Categories");
+  const [country, setCountry] = useState("All Countries");
+  const [amount, setAmount] = useState("Any Amount");
+  const [deadline, setDeadline] = useState("Any Deadline");
 
-      <SearchBar />
-      <Filters />
-      <GrantGrid />
+  const filteredGrants = useMemo(() => {
+    return grants.filter((grant) => {
+      const matchesSearch =
+        grant.title
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        grant.agency
+          .toLowerCase()
+          .includes(search.toLowerCase());
+  
+      const matchesCountry =
+        country === "All Countries" ||
+        grant.country === country;
+  
+      const matchesCategory =
+        category === "All Categories" ||
+        grant.category === category;
+  
+      return (
+        matchesSearch &&
+        matchesCountry &&
+        matchesCategory
+      );
+    });
+  }, [search, country, category]);
+
+
+  return (
+    <main>
+      <Hero />
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+        />
+
+        <Filters
+          category={category}
+          setCategory={setCategory}
+          country={country}
+          setCountry={setCountry}
+          amount={amount}
+          setAmount={setAmount}
+          deadline={deadline}
+          setDeadline={setDeadline}
+        />
+
+        <Categories />
+        <Statistics />
+        <GrantGrid grants={filteredGrants} />
+        <AgencySection />
+        <CTA />
+        console.log({
+  search,
+  category,
+  country,
+  filteredGrants,
+});
+      </section>
     </main>
   );
 }
