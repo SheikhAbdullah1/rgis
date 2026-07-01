@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 
 import Hero from "@/components/funding/Hero";
-import SearchBar from "@/components/funding/SearchBar";
 import Filters from "@/components/funding/Filters";
+import SearchBar from "@/components/funding/SearchBar";
 import Categories from "@/components/funding/Categories";
 import Statistics from "@/components/funding/Statistics";
 import GrantGrid from "@/components/funding/GrantGrid";
@@ -45,7 +45,12 @@ export default function FundingPage() {
       );
     });
   }, [search, country, category]);
-
+  console.log({
+    search,
+    category,
+    country,
+    filteredGrants,
+  });
 
   return (
     <main>
@@ -73,12 +78,6 @@ export default function FundingPage() {
         <GrantGrid grants={filteredGrants} />
         <AgencySection />
         <CTA />
-        console.log({
-  search,
-  category,
-  country,
-  filteredGrants,
-});
       </section>
     </main>
   );

@@ -7,6 +7,9 @@ interface FiltersProps {
 
   deadline: string;
   setDeadline: (value: string) => void;
+
+  amount: string;
+  setAmount: (value: string) => void;
 }
 
 export default function Filters({
@@ -14,6 +17,8 @@ export default function Filters({
   setCategory,
   country,
   setCountry,
+  amount,
+  setAmount,
   deadline,
   setDeadline,
 }: FiltersProps) {
@@ -46,12 +51,16 @@ export default function Filters({
         <option>International</option>
       </select>
 
-      <select className="rounded-lg border p-3">
-        <option>Any Amount</option>
-        <option>Under $10,000</option>
-        <option>$10,000 - $50,000</option>
-        <option>Above $50,000</option>
-      </select>
+      <select
+    className="rounded-lg border p-3"
+    value={amount}
+    onChange={(e) => setAmount(e.target.value)}
+  >
+    <option>Any Amount</option>
+    <option>Under $10,000</option>
+    <option>$10,000 - $50,000</option>
+    <option>Above $50,000</option>
+  </select>
 
       <select
         className="rounded-lg border p-3"
