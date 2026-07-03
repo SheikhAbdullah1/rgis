@@ -1,16 +1,16 @@
-import TrackingForm
-from "@/components/TrackingForm";
-import type { Metadata } from "next"; 
+import TrackingForm from "@/components/TrackingForm";
+import type { Metadata } from "next";
 
-export const metadata: Metadata = { 
-  title: "Contact Us", 
-  description: "Contact the Research Grant Intelligence System team.", 
+export const metadata: Metadata = {
+  title: "Track Proposal | RGIS",
+  description:
+    "Track the status of your submitted proposal using your RGIS tracking ID.",
 };
 
 export default function TrackProposalPage() {
   return (
-    <div className="container mx-auto py-10">
+    <main className="container mx-auto py-10">
       <TrackingForm />
-    </div>
+    </main>
   );
 }

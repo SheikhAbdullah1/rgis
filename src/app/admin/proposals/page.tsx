@@ -1,10 +1,13 @@
 import AdminProposalTable from "@/components/AdminProposalTable";
+
 export default function AdminProposalsPage() {
   return (
-    <main className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Manage Proposals</h1>
+    <main className="mx-auto max-w-7xl p-6">
+      <h1 className="mb-8 text-3xl font-bold">
+        Manage Proposals
+      </h1>
+
       <AdminProposalTable />
     </main>
-    
   );
 }

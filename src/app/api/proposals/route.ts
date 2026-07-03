@@ -1,142 +1,112 @@
-import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import fs from "fs";
-import path from "path";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Proposal from "@/models/Proposal";
-import mongoose from "mongoose";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
+import { sendEmail } from "@/lib/sendEmail";
 
-export async function POST(req: Request) {
+
+export async function GET() {
   try {
-    console.log("1. API HIT");
-
     await connectDB();
-    console.log(
-      "readyState:",
-      mongoose.connection.readyState
-    );
-    console.log("2. DB Connected");
-    console.log(
-      "DB Name:",
-      mongoose.connection.db?.databaseName
-    );
-    console.log(
-      "db:",
-      mongoose.connection.db?.databaseName
-    );
-    // console.log(
-    //   "Collection:",
-    //   proposal.collection.name
-    // );
-
-
-    if (mongoose.connection.readyState !== 1) {
-      throw new Error(
-        "MongoDB connection failed"
-      );
-    }
-    
-    const formData = await req.formData();
-    console.log("3. Form Data Received");
-
-    const file = formData.get("proposalFile") as File;
-
-    let filePath = "";
-
-    const uploadDir = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "proposals"
-    );
-
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, {
-        recursive: true,
-      });
-    }
-
-    if (file) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const fileName =
-        `${Date.now()}-${file.name}`;
-
-      filePath =
-        `/uploads/proposals/${fileName}`;
-
-      await writeFile(
-        path.join(uploadDir, fileName),
-        buffer
-      );
-
-      console.log("4. File Saved");
-    }
-
-    // const proposal =
-    // console.log("Before save");
-    //   await Proposal.create({
-    //     console.log("Saved Proposal:", proposal);
-    //     role: formData.get("role"),
-    //     submissionType:
-    //       formData.get("submissionType"),
-    //     title: formData.get("title"),
-    //     funding: formData.get("funding"),
-    //     description:
-    //       formData.get("description"),
-    //     fullName:
-    //       formData.get("fullName"),
-    //     email: formData.get("email"),
-    //     phone: formData.get("phone"),  
-    //     cnic: formData.get("cnic"),
-    //     country:
-    //       formData.get("country"),
-    //     website:
-    //       formData.get("website"),
-    //     organization:
-    //       formData.get("organization"),
-    //     proposalFile: filePath,
-    //     trackingId:
-    //       `RGIS-${Date.now()}`,
-    //   });
-
-    // console.log("5. Proposal Saved");
-    // console.log(proposal);
-    const proposal = await Proposal.create({
-      role: formData.get("role"),
-      submissionType: formData.get("submissionType"),
-      title: formData.get("title"),
-      funding: formData.get("funding"),
-      description: formData.get("description"),
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      cnic: formData.get("cnic"),
-      country: formData.get("country"),
-      website: formData.get("website"),
-      organization: formData.get("organization"),
-      proposalFile: filePath,
-      trackingId: `RGIS-${Date.now()}`,
-    });
-    
-    console.log("5. Proposal Saved");
-    console.log(proposal);
-
-    return NextResponse.json({
-      success: true,
-      message: "Proposal submitted successfully.",
-      proposal,
-    });
+    const proposals = await Proposal.find().sort({ createdAt: -1 });
+    return NextResponse.json({ success: true, proposals });
   } catch (error) {
-    console.error("API Error:", error);
-
     return NextResponse.json(
-      {
-        success: false,
-        error: String(error),
-      },
+      { success: false, message: "Failed to fetch proposals" },
       { status: 500 }
     );
   }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    await connectDB();
+    const formData = await req.formData();
+    const role = formData.get("role") as string;
+    const submissionType = formData.get("submissionType") as string;
+    const title = formData.get("title") as string;
+    const funding = formData.get("funding") as string;
+    const description = formData.get("description") as string;
+    const fullName = formData.get("fullName") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const cnic = formData.get("cnic") as string;
+    const country = formData.get("country") as string;
+    const website = formData.get("website") as string;
+    const organization = formData.get("organization") as string;
+
+    if (!role || !submissionType || !title || !description || !fullName || !email || !phone || !cnic) {
+      return NextResponse.json(
+        { success: false, message: "Please fill all required fields." },
+        { status: 400 }
+      );
+    }
+
+    let proposalFile = "";
+    const file = formData.get("proposalFile") as File | null;
+    if (file && file.size > 0) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const uploadDir = path.join(process.cwd(), "public", "uploads", "proposals");
+      await mkdir(uploadDir, { recursive: true });
+      const fileName = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+      await writeFile(path.join(uploadDir, fileName), buffer);
+      proposalFile = `/uploads/proposals/${fileName}`;
+    }
+
+    // const trackingId = `RGIS-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+    const count = await Proposal.countDocuments();
+    const num = count + 1;
+
+    const trackingId =
+      num < 100
+        ? `RGIS-${String(num).padStart(3, "0")}`  // 001 - 099
+        : `RGIS-${num}`;  
+
+    const proposal = await Proposal.create({
+      role, submissionType, title, funding, description,
+      fullName, email, phone, cnic, country, website,
+      organization, proposalFile, trackingId, status: "Pending",
+    });
+
+  //   const proposals =
+  // await Proposal.find()
+  //   .populate("agency")
+  //   .populate("grant");
+
+  //   const proposal =
+  // await Proposal.create({...});
+
+     // Email — agar fail ho to proposal save rehta hai
+     try {
+      await sendEmail(
+        proposal.email,
+        "Proposal Submitted Successfully",
+        `
+        <h2>Proposal Submitted</h2>
+        <p>Dear ${proposal.fullName},</p>
+        <p>Your proposal has been submitted successfully.</p>
+        <p>Tracking ID: <strong>${proposal.trackingId}</strong></p>
+        <p>Status: Pending</p>
+        `
+      );
+    } catch (emailError) {
+      console.error("Email failed:", emailError);
+    }
+
+    return NextResponse.json(
+      { success: true, message: `Proposal submitted! Tracking ID: ${trackingId}`, proposal },
+      { status: 201 }
+    );
+  } 
+  catch (error) {
+    console.error("Proposal submission error:", error);
+    return NextResponse.json(
+      { success: false, message: "Submission failed. Please try again." },
+      { status: 500 }
+    );
+  }
+  
 }

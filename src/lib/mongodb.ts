@@ -8,12 +8,12 @@ if (!MONGODB_URI) {
 
 let cached = (global as any).mongoose;
 
-if (!cached) {
-  cached = (global as any).mongoose = {
-    conn: null,
-    promise: null,
-  };
-}
+    if (!cached) {
+      cached = global.mongoose = {
+        conn: null,
+        promise: null,
+      };
+    }
 
     export async function connectDB() {
         // 1. If we already have a live, open connection, use it immediately
@@ -58,24 +58,4 @@ if (!cached) {
       
         return cached.conn;
       }
-    //   if (cached.conn) {
-//     return cached.conn;
-//   }
-
-//   if (!cached.promise) {
-//     console.log("Connecting to MongoDB...");
-
-//     cached.promise = mongoose
-//       .connect(MONGODB_URI)
-//       .then((mongoose) => {
-//         console.log(
-//           "Mongo Connected:",
-//           mongoose.connection.readyState
-//         );
-//         return mongoose;
-//       });
-//   }
-
-//   cached.conn = await cached.promise;
-
-//   return cached.conn;
+  

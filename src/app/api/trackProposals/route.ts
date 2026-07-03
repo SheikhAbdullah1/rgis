@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     await connectDB();
 
     const trackingId =
-      req.nextUrl.searchParams.get("trackingId");
+      req.nextUrl.searchParams.get("trackingId")?.trim();
 
     if (!trackingId) {
       return NextResponse.json(
@@ -22,7 +22,9 @@ export async function GET(req: NextRequest) {
     const proposal =
       await Proposal.findOne({
         trackingId,
-      });
+      }).select(
+        "title fullName status trackingId createdAt"
+      );
 
     if (!proposal) {
       return NextResponse.json(
@@ -39,6 +41,7 @@ export async function GET(req: NextRequest) {
       proposal,
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       {
         success: false,

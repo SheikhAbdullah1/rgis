@@ -3,6 +3,10 @@
 import { useState } from "react";
 import ProposalForm from "@/components/proposal/ProposalForm";
 import ProposalGuidelines from "@/components/proposal/ProposalGuidelines";
+import ProposalHistory from "@/components/proposal/ProposalHistory"
+// import ProposalTemplates from "@/components/proposal/ProposalTemplates";
+// import BudgetPlanner from "@/components/proposal/BudgetPlanner";
+
 // import type { Metadata } from "next"; 
 // export const metadata: Metadata = { 
 //   title: "Contact Us", 
@@ -25,6 +29,9 @@ export default function ProposalCenterPage() {
         setFormCompleted={setFormCompleted}
       />
       <ProposalGuidelines />
+      <ProposalHistory />
+      {/* <ProposalTemplates /> */}
+      {/* <BudgetPlanner /> */}
       </div>
     </main>
   );
