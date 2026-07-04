@@ -30,7 +30,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                href="/fundingOpportunities"
+                href="/funding-opportunities"
                 className="
                   rounded-xl
                   bg-white
@@ -46,7 +46,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/proposalCenter"
+                href="/proposal-center"
                 className="
                   rounded-xl
                   border

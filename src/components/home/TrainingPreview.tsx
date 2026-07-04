@@ -20,7 +20,7 @@ export default function TrainingPreview() {
           </div>
 
           <Link
-            href="/trainingAcademy"
+            href="/training-academy"
             className="
               rounded-xl
               bg-blue-600
@@ -65,7 +65,7 @@ export default function TrainingPreview() {
               </div>
 
               <Link
-                href="/trainingAcademy"
+                href="/training-academy"
                 className="
                   mt-8
                   inline-block

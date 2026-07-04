@@ -4,17 +4,69 @@ import Proposal from "@/models/Proposal";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { sendEmail } from "@/lib/sendEmail";
+import { cookies } from "next/headers";
 
-
+// export async function GET() {
+//   try {
+//     await connectDB();
+//     // const proposals = await Proposal.find().sort({ createdAt: -1 });
+//     return NextResponse.json({ success: true, proposals });
+//   } catch (error) {
+//     return NextResponse.json(
+//       { success: false, message: "Failed to fetch proposals" },
+//       { status: 500 }
+//     );
+//   }
+// }
 export async function GET() {
   try {
     await connectDB();
-    const proposals = await Proposal.find().sort({ createdAt: -1 });
-    return NextResponse.json({ success: true, proposals });
-  } catch (error) {
+    const cookieStore = await cookies();
+
+const userId = cookieStore.get("userId")?.value;
+const role = cookieStore.get("role")?.value;
+
+let proposals;
+
+if (role === "Admin") {
+  proposals = await Proposal.find().sort({
+    createdAt: -1,
+  });
+} else {
+  if (!userId) {
     return NextResponse.json(
-      { success: false, message: "Failed to fetch proposals" },
-      { status: 500 }
+      {
+        success: false,
+        message: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  proposals = await Proposal.find({
+    userId,
+  }).sort({
+    createdAt: -1,
+  });
+}
+
+return NextResponse.json({
+  success: true,
+  proposals,
+});
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to fetch proposals",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
@@ -22,6 +74,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
+
     const formData = await req.formData();
     const role = formData.get("role") as string;
     const submissionType = formData.get("submissionType") as string;
@@ -35,6 +88,19 @@ export async function POST(req: NextRequest) {
     const country = formData.get("country") as string;
     const website = formData.get("website") as string;
     const organization = formData.get("organization") as string;
+
+    const cookieStore = await cookies();
+    const userId = cookieStore.get("userId")?.value;
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please login first",
+        },
+        { status: 401 }
+      );
+    }
 
     if (!role || !submissionType || !title || !description || !fullName || !email || !phone || !cnic) {
       return NextResponse.json(
@@ -66,18 +132,10 @@ export async function POST(req: NextRequest) {
         : `RGIS-${num}`;  
 
     const proposal = await Proposal.create({
-      role, submissionType, title, funding, description,
+      userId, role, submissionType, title, funding, description,
       fullName, email, phone, cnic, country, website,
       organization, proposalFile, trackingId, status: "Pending",
     });
-
-  //   const proposals =
-  // await Proposal.find()
-  //   .populate("agency")
-  //   .populate("grant");
-
-  //   const proposal =
-  // await Proposal.create({...});
 
      // Email — agar fail ho to proposal save rehta hai
      try {

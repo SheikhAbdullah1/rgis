@@ -1,43 +1,3 @@
-// import mongoose, { Schema } from "mongoose";
-
-// const UserSchema = new Schema(
-//   {
-//     name: String,
-//     email: {
-//       type: String,
-//       unique: true,
-//     },
-//     password: String,
-//     role: {
-//       type: String,
-//       default: "Member",
-//       enum: [
-//         "Admin",
-//         "Reviewer",
-//         "Member",
-//       ],
-//     },
-//     resetToken: {
-//       type: String,
-//     },
-    
-//     resetTokenExpiry: {
-//       type: Date,
-//     },
-//   },
-//   {
-//     timestamps: true,
-//   }
-// );
-
-// export default
-//   mongoose.models.User ||
-//   mongoose.model(
-//     "User",
-//     UserSchema
-//   );
-
-
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema(
@@ -51,17 +11,26 @@ const UserSchema = new Schema(
       type: String,
       required: [true, "Email is required"],
       unique: true,
-      lowercase: true, // Auto lowercase email string to prevent duplicates like Test@test.com
+      lowercase: true,
       trim: true,
     },
     password: {
       type: String,
       required: [true, "Password is required"],
     },
+    // role: {
+    //   type: String,
+    //   default: "Member",
+    //   enum: ["Admin", "Reviewer", "Member"],
+    // },
     role: {
       type: String,
-      default: "Member",
-      enum: ["Admin", "Reviewer", "Member"],
+      enum: [
+        "Admin",
+        "Member",
+        "User",
+      ],
+      default: "User",
     },
     resetToken: {
       type: String,
@@ -71,20 +40,30 @@ const UserSchema = new Schema(
       type: Date,
       default: null,
     },
+    savedGrants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FundingOpportunity", // ✅ Relational mapping is correct
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-// Query alerts security layer: API responses mein password aur tokens ko accidentally load hone se bachane ke liye
-UserSchema.set("toJSON", {
-  transform: (_, ret) => {
-    delete ret.password;
-    delete ret.resetToken;
-    delete ret.resetTokenExpiry;
-    return ret;
-  },
-});
+// Reuse transformation function for both JSON and Object outputs
+const dynamicTransform = (_: any, ret: any) => {
+  delete ret.password;
+  delete ret.resetToken;
+  delete ret.resetTokenExpiry;
+  return ret;
+};
+
+//  Security Lock for normal JSON delivery (API responses)
+UserSchema.set("toJSON", { transform: dynamicTransform });
+
+//  Security Lock for internal objects (Server side processing/spread operators)
+UserSchema.set("toObject", { transform: dynamicTransform });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

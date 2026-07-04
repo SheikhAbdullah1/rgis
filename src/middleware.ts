@@ -1,26 +1,21 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(
-  request: NextRequest
-) {
-  if (
-    request.nextUrl.pathname.startsWith(
-      "/admin"
-    )
-  ) {
-    const auth =
-      request.cookies.get(
-        "admin-auth"
-      );
+export function middleware(req: NextRequest) {
+  const adminAuth = req.cookies.get("admin-auth")?.value;
+  const role = req.cookies.get("role")?.value;
+  const path = req.nextUrl.pathname;
 
-    if (!auth) {
-      return NextResponse.redirect(
-        new URL(
-          "/login",
-          request.url
-        )
-      );
+  // Admin routes — admin-auth cookie check karo
+  if (path.startsWith("/admin")) {
+    if (adminAuth !== "true" || role !== "Admin") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+  }
+
+  // User dashboard + proposal center — koi bhi logged in user
+  if (path.startsWith("/dashboard") || path.startsWith("/proposal-center")) {
+    if (!role && adminAuth !== "true") {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
@@ -28,5 +23,9 @@ export function middleware(
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/dashboard/:path*",
+    "/proposal-center/:path*",
+  ],
 };

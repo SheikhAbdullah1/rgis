@@ -34,7 +34,7 @@ export default function AgencyCard({ agency }: Props) {
           </a>
         )}
         <Link
-          href={`/fundingAgencies/${agency._id}`}
+          href={`/funding-agencies/${agency._id}`}
           className="rounded border px-4 py-2"
         >
           Details

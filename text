@@ -36,3 +36,22 @@ Meri recommendation: ab seedha Proposal Tracking System complete karo, phir Admi
 
 
 https://chatgpt.com/g/g-p-6a3d1ce1b4b48191bf1b8bb9396a30bb/c/6a3d1cfb-c718-83ee-ac04-baecf732a3a1
+
+
+function Show-Tree {
+    param(
+        [string]$Path = ".",
+        [string[]]$Exclude = @("node_modules", ".next")
+    )
+
+    Get-ChildItem -LiteralPath $Path | Where-Object {
+        $Exclude -notcontains $_.Name
+    } | ForEach-Object {
+        Write-Host $_.Name
+        if ($_.PSIsContainer) {
+            tree $_.FullName /F
+        }
+    }
+}
+
+Show-Tree

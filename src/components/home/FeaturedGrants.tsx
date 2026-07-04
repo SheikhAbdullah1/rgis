@@ -26,7 +26,7 @@ export default function FeaturedGrants() {
           </div>
 
           <Link
-            href="/fundingOpportunities"
+            href="/funding-opportunities"
             className="
               rounded-xl
               bg-blue-600
@@ -84,7 +84,7 @@ export default function FeaturedGrants() {
               </div>
 
               <Link
-                href="/fundingOpportunities"
+                href="/funding-opportunities"
                 className="
                   mt-8
                   inline-block

@@ -1,47 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-// const ProposalSchema = new Schema(
-//   {
-//     title: String,
-//     applicantName: String,
-//     applicantEmail: String,
-
-//     agency: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Agency",
-//     },
-
-//     grant: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "FundingOpportunity",
-//     },
-
-//     abstract: String,
-//     objectives: String,
-//     budget: String,
-
-//     proposalFile: String,
-
-//     status: {
-//       type: String,
-//       default: "Submitted",
-//     },
-
-//     comments: [
-//       {
-//         text: String,
-//         createdAt: {
-//           type: Date,
-//           default: Date.now,
-//         },
-//       },
-//     ],
-//   },
-//   {
-//     timestamps: true,
-//   }
-// );
-
 const ProposalSchema = new Schema(
   {
     role: String,
@@ -69,6 +27,16 @@ const ProposalSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "FundingOpportunity",
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    
   
     abstract: String,
     objectives: String,
