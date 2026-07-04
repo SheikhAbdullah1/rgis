@@ -1,13 +1,11 @@
-import UserTable from "@/components/admin/UserTable";
+import AdminUsersTable from "@/components/admin/AdminUsersTable";
 
-export default function UsersPage() {
+export default function Page() {
   return (
-    <main className="mx-auto max-w-7xl p-6">
-      <h1 className="mb-8 text-3xl font-bold">
-        Manage Users
-      </h1>
+    <div>
+      <h1 className="mb-6 text-3xl font-bold">User Management</h1>
 
-      <UserTable />
-    </main>
+      <AdminUsersTable />
+    </div>
   );
 }

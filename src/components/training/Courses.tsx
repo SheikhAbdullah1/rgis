@@ -1,45 +1,30 @@
-import CourseCard from "./CourseCard";
-const courses = [
-    {
-      title: "Grant Writing Masterclass",
-      duration: "6 Weeks",
-      level: "Intermediate",
-      instructor: "Dr. Ahmed Khan",
-    },
-    {
-      title: "Research Methodology",
-      duration: "8 Weeks",
-      level: "Beginner",
-      instructor: "Dr. Sarah Ali",
-    },
-    {
-      title: "AI Tools for Researchers",
-      duration: "4 Weeks",
-      level: "Advanced",
-      instructor: "Prof. Bilal Hassan",
-    },
-  ];
+"use client";
+
+import { useEffect, useState } from "react";
 
 export default function Courses() {
-  return (
-    <section className="bg-gray-50 py-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="mb-12 text-center text-4xl font-bold">
-          Featured Courses
-        </h2>
+  const [courses, setCourses] = useState([]);
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <CourseCard
-              key={course.title}
-              title={course.title}
-              duration={course.duration}
-              level={course.level}
-              instructor={course.instructor}
-            />
-          ))}
+  useEffect(() => {
+    fetch("/api/courses")
+      .then((res) => res.json())
+      .then((data) => setCourses(data.courses));
+  }, []);
+
+  return (
+    <div className="grid md:grid-cols-3 gap-6">
+      {courses.map((course: any) => (
+        <div key={course._id} className="rounded-xl border p-5">
+          <img
+            src={course.image}
+            className="h-48 w-full rounded object-cover"
+          />
+
+          <h2 className="mt-4 font-bold">{course.title}</h2>
+
+          <p>{course.category}</p>
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 }

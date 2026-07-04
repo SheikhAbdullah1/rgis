@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 import ProposalForm from "@/components/proposal/ProposalForm";
 import ProposalGuidelines from "@/components/proposal/ProposalGuidelines";
 import ProposalHistory from "@/components/proposal/ProposalHistory";
@@ -10,34 +8,10 @@ import ProposalTemplates from "@/components/proposal/ProposalTemplates";
 
 export default function ProposalCenterPage() {
   const [formCompleted, setFormCompleted] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    // check cookie (client-side simple check)
-    const cookies = document.cookie;
-
-    const hasUser =
-      cookies.includes("user-auth") ||
-      cookies.includes("admin-auth");
-
-    if (!hasUser) {
-      router.push("/login?redirect=/proposal-center");
-    } else {
-      setIsLoggedIn(true);
-    }
-  }, [router]);
-
-  if (!isLoggedIn) {
-    return null; // prevent UI flash
-  }
 
   return (
     <main className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">
-        Proposal Center
-      </h1>
+      <h1 className="text-3xl font-bold mb-8">Proposal Center</h1>
 
       {/* Form + Guidelines — side by side */}
       <div className="grid lg:grid-cols-2 gap-10 mb-10">

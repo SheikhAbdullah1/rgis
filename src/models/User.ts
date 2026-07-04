@@ -46,6 +46,14 @@ const UserSchema = new Schema(
         ref: "FundingOpportunity", // ✅ Relational mapping is correct
       },
     ],
+    status: {
+      type: String,
+      enum: [
+        "Active",
+        "Suspended",
+      ],
+      default: "Active",
+    },
   },
   {
     timestamps: true,

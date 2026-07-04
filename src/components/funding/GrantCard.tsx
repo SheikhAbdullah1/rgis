@@ -1,85 +1,3 @@
-// import Link from "next/link";
-
-// interface GrantCardProps {
-//   _id?: string;
-//   id?: number;
-//   title: string;
-//   agency: string;
-//   amount: string;
-//   deadline: string;
-//   category?: string;
-//   country?: string;
-// }
-
-// export default function GrantCard({
-//   _id,
-//   id,
-//   title,
-//   agency,
-//   amount,
-//   deadline,
-//   category,
-//   country,
-// }: GrantCardProps) {
-//   const grantId = _id ?? id;
-
-
-//   await fetch(
-//     "/api/saved-grants",
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type":
-//           "application/json",
-//       },
-//       body: JSON.stringify({
-//         grantId:
-//           grant._id,
-//       }),
-//     }
-//   );
-
-//   return (
-//     <div className="rounded-2xl border bg-white p-6 shadow-sm">
-//       <h3 className="text-xl font-bold">{title}</h3>
-
-//       {category && (
-//         <span className="mt-2 inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
-//           {category}
-//         </span>
-//       )}
-
-//       <p className="mt-3 text-gray-600">Agency: {agency}</p>
-//       {country && <p className="text-gray-600">Country: {country}</p>}
-//       <p className="text-gray-600">Amount: {amount}</p>
-//       <p className="text-gray-600">Deadline: {deadline}</p>
-
-//       <div className="mt-6 flex gap-3">
-//         {grantId && (
-//           <Link
-//             href={`/funding-opportunities/${grantId}`}
-//             className="flex-1 rounded-lg border border-blue-600 py-3 text-center text-blue-600 hover:bg-blue-50"
-//           >
-//             View Details
-//           </Link>
-//         )}
-//         </div>
-
-//         <button
-//   onClick={() =>
-//     saveGrant(
-//       grant._id
-//     )
-//   }
-// >
-//   Save Grant
-// </button>
-//     </div>
-//   );
-// }
-
-
-
 "use client"; // Required since we are using interactive buttons & click handlers
 
 import { useState } from "react";
@@ -113,7 +31,7 @@ export default function GrantCard({
   // ✅ Fixed: Wrapped the fetch call inside a proper event handler function
   const handleSaveGrant = async () => {
     if (!grantId) return;
-    
+
     setSaving(true);
     try {
       const res = await fetch("/api/saved-grants", {
@@ -140,6 +58,20 @@ export default function GrantCard({
     }
   };
 
+  const saveGrant = async () => {
+    await fetch("/api/saved-grants", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        grantId: grant._id,
+      }),
+    });
+  };
+
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
       <h3 className="text-xl font-bold text-gray-900 line-clamp-2">{title}</h3>
@@ -151,10 +83,20 @@ export default function GrantCard({
       )}
 
       <div className="mt-4 space-y-1.5 text-sm text-gray-600">
-        <p><strong>Agency:</strong> {agency}</p>
-        {country && <p><strong>Country:</strong> {country}</p>}
-        <p><strong>Amount:</strong> {amount}</p>
-        <p><strong>Deadline:</strong> {deadline}</p>
+        <p>
+          <strong>Agency:</strong> {agency}
+        </p>
+        {country && (
+          <p>
+            <strong>Country:</strong> {country}
+          </p>
+        )}
+        <p>
+          <strong>Amount:</strong> {amount}
+        </p>
+        <p>
+          <strong>Deadline:</strong> {deadline}
+        </p>
       </div>
 
       {/* ✅ Fixed: Grouped both actions cleanly inside the same flexbox container */}
@@ -178,6 +120,12 @@ export default function GrantCard({
           }`}
         >
           {saving ? "Saving..." : isSaved ? "Saved ✓" : "Save Grant"}
+        </button>
+        <button
+          onClick={saveGrant}
+          className="bg-blue-600 text-white px-3 py-2 rounded"
+        >
+          Save Grant
         </button>
       </div>
     </div>

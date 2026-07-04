@@ -1,59 +1,64 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { memberships } from "@/data/memberships";
+import { useSearchParams }
+from "next/navigation";
 
-export default function CheckoutPage() {
+export default function Checkout() {
   const params =
     useSearchParams();
 
-  const id =
-    params.get("id");
+  const amount =
+    params.get("amount");
 
-  const plan =
-    memberships.find(
-      (m) =>
-        m.id.toString() === id
-    );
+  const type =
+    params.get("type");
 
-  if (!plan)
-    return (
-      <main className="p-6">
-        Plan not found.
-      </main>
-    );
+  const handlePayment =
+    async () => {
+      const res =
+        await fetch(
+          "/api/payments",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              amount,
+              membershipType:
+                type,
+            }),
+          }
+        );
+
+      const data =
+        await res.json();
+
+      if (data.url) {
+        window.location.href =
+          data.url;
+      }
+    };
 
   return (
-    <main className="mx-auto max-w-3xl p-6">
-      <div className="rounded-xl border p-8">
-        <h1 className="mb-6 text-3xl font-bold">
-          Checkout
-        </h1>
+    <div className="max-w-xl mx-auto p-10">
+      <h1 className="text-3xl font-bold mb-6">
+        Membership Checkout
+      </h1>
 
-        <div className="mb-8 rounded-lg bg-gray-50 p-6">
-          <h2 className="text-2xl font-bold">
-            {plan.name}
-          </h2>
+      <p>Plan: {type}</p>
 
-          <p className="mt-3">
-            {plan.description}
-          </p>
+      <p>Amount: ${amount}</p>
 
-          <div className="mt-4 text-4xl font-bold text-blue-600">
-            ${plan.price}
-          </div>
-        </div>
-
-        <button className="w-full rounded bg-green-600 py-4 text-white">
-          Pay Now
-        </button>
-
-        <p className="mt-4 text-center text-gray-500">
-          Payment integration
-          will be added in
-          Phase 2.
-        </p>
-      </div>
-    </main>
+      <button
+        onClick={handlePayment}
+        className="mt-6 bg-blue-600 text-white px-6 py-3 rounded"
+      >
+        Pay Now
+      </button>
+    </div>
   );
 }

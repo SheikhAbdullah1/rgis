@@ -1,6 +1,6 @@
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecentProposals from "@/components/dashboard/RecentProposals";
-// import ProposalChart from "@/components/dashboard/ProposalChart";
+import ProposalChart from "@/components/dashboard/ProposalChart";
 
 export default function AdminDashboardPage() {
   return (
@@ -10,14 +10,14 @@ export default function AdminDashboardPage() {
           Admin Dashboard
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          Research Grant Intelligence System Overview
+        <p className="text-gray-500">
+        Welcome to Research Grant Intelligence System Admin Panel.
         </p>
       </div>
 
       <DashboardStats />
 
-      {/* <ProposalChart /> */}
+      <ProposalChart />
 
       <RecentProposals />
     </main>

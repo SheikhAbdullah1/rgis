@@ -5,57 +5,46 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { sendEmail } from "@/lib/sendEmail";
 import { cookies } from "next/headers";
-
-// export async function GET() {
-//   try {
-//     await connectDB();
-//     // const proposals = await Proposal.find().sort({ createdAt: -1 });
-//     return NextResponse.json({ success: true, proposals });
-//   } catch (error) {
-//     return NextResponse.json(
-//       { success: false, message: "Failed to fetch proposals" },
-//       { status: 500 }
-//     );
-//   }
-// }
+// import { Notification } from "@/models/Notification";
+// export default mongoose.models.Notification ||
+// mongoose.model("Notification", NotificationSchema);
 export async function GET() {
   try {
     await connectDB();
     const cookieStore = await cookies();
+    const userId = cookieStore.get("userId")?.value;
+    const role = cookieStore.get("role")?.value;
 
-const userId = cookieStore.get("userId")?.value;
-const role = cookieStore.get("role")?.value;
+    let proposals;
 
-let proposals;
-
-if (role === "Admin") {
-  proposals = await Proposal.find().sort({
-    createdAt: -1,
-  });
-} else {
-  if (!userId) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Unauthorized",
-      },
-      {
-        status: 401,
+    if (role === "Admin") {
+      proposals = await Proposal.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      if (!userId) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Unauthorized",
+          },
+          {
+            status: 401,
+          },
+        );
       }
-    );
-  }
 
-  proposals = await Proposal.find({
-    userId,
-  }).sort({
-    createdAt: -1,
-  });
-}
+      proposals = await Proposal.find({
+        userId,
+      }).sort({
+        createdAt: -1,
+      });
+    }
 
-return NextResponse.json({
-  success: true,
-  proposals,
-});
+    return NextResponse.json({
+      success: true,
+      proposals,
+    });
   } catch (error) {
     console.error(error);
 
@@ -66,7 +55,7 @@ return NextResponse.json({
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }
@@ -89,6 +78,7 @@ export async function POST(req: NextRequest) {
     const website = formData.get("website") as string;
     const organization = formData.get("organization") as string;
 
+    // Login Checking
     const cookieStore = await cookies();
     const userId = cookieStore.get("userId")?.value;
 
@@ -98,14 +88,24 @@ export async function POST(req: NextRequest) {
           success: false,
           message: "Please login first",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
-    if (!role || !submissionType || !title || !description || !fullName || !email || !phone || !cnic) {
+    // Validating
+    if (
+      !role ||
+      !submissionType ||
+      !title ||
+      !description ||
+      !fullName ||
+      !email ||
+      !phone ||
+      !cnic
+    ) {
       return NextResponse.json(
         { success: false, message: "Please fill all required fields." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -114,7 +114,12 @@ export async function POST(req: NextRequest) {
     if (file && file.size > 0) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uploadDir = path.join(process.cwd(), "public", "uploads", "proposals");
+      const uploadDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "proposals",
+      );
       await mkdir(uploadDir, { recursive: true });
       const fileName = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
       await writeFile(path.join(uploadDir, fileName), buffer);
@@ -128,17 +133,41 @@ export async function POST(req: NextRequest) {
 
     const trackingId =
       num < 100
-        ? `RGIS-${String(num).padStart(3, "0")}`  // 001 - 099
-        : `RGIS-${num}`;  
+        ? `RGIS-${String(num).padStart(3, "0")}` // 001 - 099
+        : `RGIS-${num}`;
 
     const proposal = await Proposal.create({
-      userId, role, submissionType, title, funding, description,
-      fullName, email, phone, cnic, country, website,
-      organization, proposalFile, trackingId, status: "Pending",
+      userId,
+      role,
+      submissionType,
+      title,
+      funding,
+      description,
+      fullName,
+      email,
+      phone,
+      cnic,
+      country,
+      website,
+      organization,
+      proposalFile,
+      trackingId,
+      status: "Pending",
     });
 
-     // Email — agar fail ho to proposal save rehta hai
-     try {
+    try {
+      await Notification.create({
+        userId,
+        title: "Proposal Submitted",
+        message: `Your proposal ${trackingId} has been submitted.`,
+        type: "Proposal",
+      });
+    } catch (notifError) {
+      console.error("Notification Failed:", notifError);
+    }
+    
+    // Email — agar fail ho to proposal save rehta hai
+    try {
       await sendEmail(
         proposal.email,
         "Proposal Submitted Successfully",
@@ -148,23 +177,25 @@ export async function POST(req: NextRequest) {
         <p>Your proposal has been submitted successfully.</p>
         <p>Tracking ID: <strong>${proposal.trackingId}</strong></p>
         <p>Status: Pending</p>
-        `
+        `,
       );
     } catch (emailError) {
       console.error("Email failed:", emailError);
     }
 
     return NextResponse.json(
-      { success: true, message: `Proposal submitted! Tracking ID: ${trackingId}`, proposal },
-      { status: 201 }
+      {
+        success: true,
+        message: `Proposal submitted! Tracking ID: ${trackingId}`,
+        proposal,
+      },
+      { status: 201 },
     );
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("Proposal submission error:", error);
     return NextResponse.json(
       { success: false, message: "Submission failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
-  
 }

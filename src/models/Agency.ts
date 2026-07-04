@@ -5,24 +5,33 @@ const AgencySchema = new Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
+      unique: true,
     },
 
-    logo: String,
+    country: {
+      type: String,
+      default: "",
+    },
 
-    country: String,
+    website: {
+      type: String,
+      default: "",
+    },
 
-    website: String,
+    description: {
+      type: String,
+      default: "",
+    },
 
-    description: String,
-
-    fundingTypes: [String],
-
-    focusAreas: [String],
-
-    email: String,
+    logo: {
+      type: String,
+      default: "",
+    },
 
     status: {
       type: String,
+      enum: ["Active", "Inactive"],
       default: "Active",
     },
   },
@@ -33,7 +42,4 @@ const AgencySchema = new Schema(
 
 export default
   mongoose.models.Agency ||
-  mongoose.model(
-    "Agency",
-    AgencySchema
-  );
+  mongoose.model("Agency", AgencySchema);

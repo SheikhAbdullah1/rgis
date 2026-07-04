@@ -1,7 +1,4 @@
-import { redirect } from "next/navigation";
-import { getRole } from "@/lib/auth";
-
-import AdminHeader from "@/components/admin/AdminHeader";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default function AdminLayout({
   children,
@@ -9,24 +6,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <AdminHeader />
-      {children}
-    </>
+    <div className="flex min-h-screen">
+      <AdminSidebar />
+      <main className="flex-1 bg-gray-50 p-8">{children}</main>
+    </div>
   );
 }
-
-// export default async function Layout({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   // ✅ await zaroori hai — getRole() ab async hai
-//   const role = await getRole();
-
-//   if (role !== "Admin") {
-//     redirect("/login");
-//   }
-
-//   return <>{children}</>;
-// }

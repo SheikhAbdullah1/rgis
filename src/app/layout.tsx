@@ -4,31 +4,43 @@ import Footer from "@/components/layout/Footer";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
-import { cookies } from "next/headers"; // ✅ Added to read cookies on server runtime
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
-import "./globals.css";
+
+// export const metadata: Metadata = {
+//   title: "Research Grant Intelligence System",
+//   description: "Research funding opportunities and proposal management platform.",
+// };
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://rgis.vercel.app"),
+  title: {
+    default: "RGIS | Research Grant Intelligence System",
+    template: "%s | RGIS",
+  },
+  description: "Research Grant Intelligence System connects researchers with funding opportunities worldwide.",
+};
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // 🔄 Read fresh session properties from client requests
   const cookieStore = await cookies();
-  // const userRole = cookieStore.get("role")?.value || "";
-  // const isLoggedIn = !!cookieStore.get("role"); // User logged-in hai agar role cookie exist karti hai
-  const adminAuth = cookieStore.get("admin-auth")?.value;
-  const isLoggedIn = adminAuth === "true";
-  const userRole = isLoggedIn ? "Admin" : "";
+  
+  const adminAuth = cookieStore.get("admin-auth")?.value === "true";
+  const userRole  = cookieStore.get("role")?.value || "";
+  
+  // Admin ya koi bhi logged in user
+  const isLoggedIn = adminAuth || !!userRole;
+  const role = adminAuth ? "Admin" : userRole;
 
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body>
-        {/* ✅ Passing down parameters dynamically */}
-        <Navbar isLoggedIn={isLoggedIn} userRole={userRole} />
-        
+        <Navbar isLoggedIn={isLoggedIn} userRole={role} />
         {children}
         <Toaster position="top-right" />
         <Footer />
@@ -36,14 +48,3 @@ export default async function RootLayout({
     </html>
   );
 }
-
-// Keep your export const metadata block exactly as it is...
-export const metadata: Metadata = {
-  metadataBase: new URL("https://rgis.netlify.app"),
-  title: {
-    default: "RGIS | Research Grant Intelligence System",
-    template: "%s | RGIS",
-  },
-  description: "Research Grant Intelligence System (RGIS)...",
-  // ... rest of your metadata
-};

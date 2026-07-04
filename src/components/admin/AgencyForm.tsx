@@ -13,19 +13,6 @@ export default function AgencyForm({
   onClose,
   refresh,
 }: Props) {
-  // const [form, setForm] = useState({
-  //   name: agency?.name || "",
-  //   country: agency?.country || "",
-  //   website: agency?.website || "",
-  //   email: agency?.email || "",
-  //   description: agency?.description || "",
-  //   logo: agency?.logo || "",
-  //   fundingTypes:
-  //     agency?.fundingTypes?.join(", ") || "",
-  //   focusAreas:
-  //     agency?.focusAreas?.join(", ") || "",
-  //   status: agency?.status || "Active",
-  // });
   const [form, setForm] = useState({
     name: agency?.name || "",
     country: agency?.country || "",

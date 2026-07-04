@@ -1,5 +1,4 @@
 import AgencyList from "@/components/funding/AgencyList";
-
 export default function FundingAgenciesPage() {
   return (
     <main className="mx-auto max-w-7xl p-6">

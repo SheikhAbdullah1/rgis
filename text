@@ -18,7 +18,23 @@ const sdgNames = [
 "Partnerships",
 ];
 
+Admin can:
 
+✅ View all users
+
+✅ Search users
+
+✅ Change role
+
+✅ Suspend users
+
+✅ Activate users
+
+✅ Delete users
+
+✅ View user's proposals
+
+✅ View user's memberships
 
 Final Project Roadmap
 ✔ Proposal Submission
@@ -37,6 +53,8 @@ Meri recommendation: ab seedha Proposal Tracking System complete karo, phir Admi
 
 https://chatgpt.com/g/g-p-6a3d1ce1b4b48191bf1b8bb9396a30bb/c/6a3d1cfb-c718-83ee-ac04-baecf732a3a1
 
+# to clear nxtjs cahce
+rm -rf .next
 
 function Show-Tree {
     param(

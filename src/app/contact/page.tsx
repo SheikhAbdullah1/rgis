@@ -5,13 +5,6 @@ import OfficeHours from "@/components/contact/OfficeHours";
 import FAQ from "@/components/contact/FAQ";
 import Map from "@/components/contact/Map";
 import CTA from "@/components/contact/CTA";
-import type { Metadata } from "next"; 
-
-export const metadata: Metadata = { 
-  title: "Contact Us", 
-  description: "Contact the Research Grant Intelligence System team.", 
-};
-
 export default function ContactPage() {
   return (
     <main>

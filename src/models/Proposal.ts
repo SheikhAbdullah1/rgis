@@ -35,8 +35,7 @@ const ProposalSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
-    
+    },   
   
     abstract: String,
     objectives: String,
