@@ -27,7 +27,7 @@ const actions = [
     title: "Submit Proposal",
     description:
       "Submit your research proposal for funding and expert review.",
-    href: "/proposalCenter",
+    href: "/proposal-center",
     icon: FileText,
     color: "bg-purple-100 text-purple-600",
   },
@@ -35,7 +35,7 @@ const actions = [
     title: "Track Proposal",
     description:
       "Monitor the status of your submitted proposal online.",
-    href: "/trackProposal",
+    href: "/track-proposal",
     icon: Search,
     color: "bg-orange-100 text-orange-600",
   },
