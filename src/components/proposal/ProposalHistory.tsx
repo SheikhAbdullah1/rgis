@@ -6,15 +6,44 @@ export default function ProposalHistory() {
   const [proposals, setProposals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch("/api/my-proposals")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.success) setProposals(data.proposals);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }, []);
   useEffect(() => {
-    fetch("/api/my-proposals")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setProposals(data.proposals);
-      })
-      .finally(() => setLoading(false));
+    const loadProposals = async () => {
+      try {
+        const res = await fetch("/api/my-proposals");
+  
+        if (res.status === 401) {
+          setProposals([]);
+          return;
+        }
+  
+        if (!res.ok) {
+          console.error("Failed:", res.status);
+          return;
+        }
+  
+        const data = await res.json();
+  
+        if (data.success) {
+          setProposals(data.proposals || []);
+        }
+      } catch (err) {
+        console.error("Proposal fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    loadProposals();
   }, []);
-
+  
   if (loading) {
     return <p className="text-gray-500 py-4">Loading proposals...</p>;
   }

@@ -3,7 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import Proposal from "@/models/Proposal";
 import Agency from "@/models/Agency";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 import Membership from "@/models/Membership";
 
 export async function GET() {

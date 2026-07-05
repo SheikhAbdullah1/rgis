@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/mongodb";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 
 export default async function GrantDetails({
   params,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 import Notification from "@/models/Notification";
 import User from "@/models/User";
 
@@ -59,22 +59,16 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const opportunity =
-      await FundingOpportunity.create(
-        body
-      );
+    const opportunity = await FundingOpportunity.create(body);
 
     // notify all users
-    const users =
-      await User.find();
+    const users = await User.find();
 
     for (const user of users) {
       await Notification.create({
         userId: user._id,
-        title:
-          "New Funding Opportunity",
-        message:
-          `${opportunity.title} has been added.`,
+        title: "New Funding Opportunity",
+        message: `${opportunity.title} has been added.`,
         type: "Funding",
       });
     }
@@ -92,7 +86,7 @@ export async function POST(req: NextRequest) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

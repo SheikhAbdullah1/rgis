@@ -30,17 +30,32 @@ export default function GrantGrid({ grants }: GrantGridProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {grants.map((grant, index) => (
+        // <GrantCard
+        //   key={grant._id ?? grant.id ?? index}
+        //   title={grant.title}
+        //   // agency={grant.agency}
+        //   // agency={grant.agency?.name || ""}
+        //   agency={typeof grant.agency === "string" ? grant.agency : grant.agency?.name || "N/A"}
+        //   amount={grant.amount}
+        //   deadline={grant.deadline}
+        //   category={grant.category}
+        //   country={grant.country}
+        // />
         <GrantCard
-          key={grant._id ?? grant.id ?? index}
-          title={grant.title}
-          // agency={grant.agency}
-          // agency={grant.agency?.name || ""}
-          agency={typeof grant.agency === "string" ? grant.agency : grant.agency?.name || "N/A"}
-          amount={grant.amount}
-          deadline={grant.deadline}
-          category={grant.category}
-          country={grant.country}
-        />
+  key={grant._id ?? grant.id ?? index}
+  _id={grant._id}
+  id={grant.id}
+  title={grant.title}
+  agency={
+    typeof grant.agency === "string"
+      ? grant.agency
+      : grant.agency?.name || "N/A"
+  }
+  amount={grant.amount}
+  deadline={grant.deadline}
+  category={grant.category}
+  country={grant.country}
+/>
       ))}
     </div>
   );

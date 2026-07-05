@@ -22,15 +22,39 @@ export default function FundingPage() {
   const [deadline, setDeadline] = useState("Any Deadline");
 
   // Fetch grants from DB
-  useEffect(() => {
-    fetch("/api/grants")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setGrants(data.grants);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   console.log("Funding page mounted")
+  //   fetch("/api/grants")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.success) setGrants(data.grants);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }, []);
 
+  useEffect(() => {
+    console.log("Funding page mounted");
+  
+    fetch("/api/grants")
+      .then((res) => {
+        console.log("Status:", res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Data:", data);
+  
+        if (data.success) {
+          setGrants(data.grants);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        console.log("Loading false");
+        setLoading(false);
+      });
+  }, []);
   const filteredGrants = useMemo(() => {
     return grants.filter((grant) => {
       const matchesSearch =

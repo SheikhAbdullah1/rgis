@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/mongodb";
 import Agency from "@/models/Agency";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 
 export default async function Page({
   params,

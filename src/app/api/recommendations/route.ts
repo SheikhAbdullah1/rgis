@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 
 import User from "@/models/User";
 import Proposal from "@/models/Proposal";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 
 export async function GET() {
   try {

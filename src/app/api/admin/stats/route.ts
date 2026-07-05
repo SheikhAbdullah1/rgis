@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import Proposal from "@/models/Proposal";
 import Membership from "@/models/Membership";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 
 export async function GET() {
   try {
@@ -14,8 +14,12 @@ export async function GET() {
     const totalProposals = await Proposal.countDocuments();
     const totalMemberships = await Membership.countDocuments();
     const totalFunding = await FundingOpportunity.countDocuments();
-    const approvedProposals = await Proposal.countDocuments({ status: "Approved" });
-    const pendingProposals = await Proposal.countDocuments({ status: "Pending" });
+    const approvedProposals = await Proposal.countDocuments({
+      status: "Approved",
+    });
+    const pendingProposals = await Proposal.countDocuments({
+      status: "Pending",
+    });
 
     return NextResponse.json({
       success: true,

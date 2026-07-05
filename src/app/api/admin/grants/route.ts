@@ -132,11 +132,10 @@
 //   }
 // }
 
-
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { connectDB } from "@/lib/mongodb";
-import FundingOpportunity from "@/models/FundingOpportunity";
+import FundingOpportunity from "@/models/Funding-opportunity";
 
 // 🔐 Helper function to check if the incoming request belongs to an Admin
 async function isAdminAuthorized() {
@@ -149,7 +148,10 @@ export async function GET() {
   try {
     // 🛡️ Security Guard Layer
     if (!(await isAdminAuthorized())) {
-      return NextResponse.json({ success: false, message: "Unauthorized access denied." }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: "Unauthorized access denied." },
+        { status: 401 },
+      );
     }
 
     await connectDB();
@@ -164,14 +166,20 @@ export async function GET() {
     });
   } catch (error: any) {
     console.error("GET_GRANTS_ERROR:", error.message);
-    return NextResponse.json({ success: false, message: "Failed to fetch grants data grid." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch grants data grid." },
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     if (!(await isAdminAuthorized())) {
-      return NextResponse.json({ success: false, message: "Unauthorized access denied." }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: "Unauthorized access denied." },
+        { status: 401 },
+      );
     }
 
     await connectDB();
@@ -185,27 +193,36 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("CREATE_GRANT_ERROR:", error.message);
-    return NextResponse.json({ success: false, message: "Failed to create new grant schema." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Failed to create new grant schema." },
+      { status: 500 },
+    );
   }
 }
 
 export async function PATCH(req: NextRequest) {
   try {
     if (!(await isAdminAuthorized())) {
-      return NextResponse.json({ success: false, message: "Unauthorized access denied." }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: "Unauthorized access denied." },
+        { status: 401 },
+      );
     }
 
     await connectDB();
     const { id, ...updates } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ success: false, message: "Target document ID field is required." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Target document ID field is required." },
+        { status: 400 },
+      );
     }
 
     const grant = await FundingOpportunity.findByIdAndUpdate(
       id,
       updates,
-      { new: true } // Return modified object structure instead of legacy document
+      { new: true }, // Return modified object structure instead of legacy document
     );
 
     return NextResponse.json({
@@ -214,21 +231,30 @@ export async function PATCH(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("PATCH_GRANT_ERROR:", error.message);
-    return NextResponse.json({ success: false, message: "Target configuration update failed." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Target configuration update failed." },
+      { status: 500 },
+    );
   }
 }
 
 export async function DELETE(req: NextRequest) {
   try {
     if (!(await isAdminAuthorized())) {
-      return NextResponse.json({ success: false, message: "Unauthorized access denied." }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: "Unauthorized access denied." },
+        { status: 401 },
+      );
     }
 
     await connectDB();
     const { id } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ success: false, message: "Target document ID field is required." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Target document ID field is required." },
+        { status: 400 },
+      );
     }
 
     await FundingOpportunity.findByIdAndDelete(id);
@@ -239,6 +265,9 @@ export async function DELETE(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("DELETE_GRANT_ERROR:", error.message);
-    return NextResponse.json({ success: false, message: "Data destruction execution failed." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Data destruction execution failed." },
+      { status: 500 },
+    );
   }
 }
