@@ -8,7 +8,6 @@ import ProposalTemplates from "@/components/proposal/ProposalTemplates";
 
 export default function ProposalCenterPage() {
   const [formCompleted, setFormCompleted] = useState(false);
-
   return (
     <main className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Proposal Center</h1>
