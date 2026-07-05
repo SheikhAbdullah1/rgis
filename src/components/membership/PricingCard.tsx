@@ -9,6 +9,7 @@ interface PricingCardProps {
   features: string[];
   buttonText: string;
   highlighted?: boolean;
+  href: string;
 }
 
 export default function PricingCard({

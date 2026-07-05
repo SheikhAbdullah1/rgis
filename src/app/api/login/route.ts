@@ -27,6 +27,8 @@ export async function POST(req: Request) {
       response.cookies.set("admin-auth", "true", {
         httpOnly: true,
         path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7,
       });
 
@@ -75,31 +77,33 @@ export async function POST(req: Request) {
       success: true,
       user,
     });
-
     response.cookies.set(
       "user-auth",
-      user._id / toString(),
-      // "true",
+      user._id.toString(),
       {
         httpOnly: true,
         path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7,
-      },
+      }
     );
 
     response.cookies.set("role", user.role || "User", {
       httpOnly: true,
       path: "/",
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     response.cookies.set("userId", user._id.toString(), {
-      httpOnly: true,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+  httpOnly: true,
+  path: "/",
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  maxAge: 60 * 60 * 24 * 7,
+});
 
     return response;
   } catch (error) {

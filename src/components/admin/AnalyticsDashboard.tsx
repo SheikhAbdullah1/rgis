@@ -29,7 +29,8 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="space-y-8">
-      <AnalyticsCards stats={stats} />
+      {/* <AnalyticsCards stats={stats} /> */}
+      <AnalyticsCards   />
 
       <div className="grid lg:grid-cols-2 gap-6">
         <ProposalChart data={chart.proposalStats} />

@@ -9,7 +9,7 @@ if (!MONGODB_URI) {
 let cached = (global as any).mongoose;
 
     if (!cached) {
-      cached = global.mongoose = {
+      cached = (global as any).mongoose = {
         conn: null,
         promise: null,
       };
@@ -21,21 +21,21 @@ let cached = (global as any).mongoose;
           return mongoose.connection;
         }
         mongoose.connection.on("connected", () => {
-          console.log("Mongoose connected");
+          // console.log("Mongoose connected");
         });
         
         mongoose.connection.on("error", (err) => {
-          console.log("Mongoose error:", err);
+          // console.log("Mongoose error:", err);
         });
         
         mongoose.connection.on("disconnected", () => {
-          console.log("Mongoose disconnected");
+          // console.log("Mongoose disconnected");
         });
       
         // 2. If there's no promise, or the connection was dropped (State 0), spin up a new connection
         if (!cached.promise || mongoose.connection.readyState === 0) {
-          console.log("Connecting to MongoDB...");
-          console.log("Mongo URI:", MONGODB_URI);
+          // console.log("Connecting to MongoDB...");
+          // console.log("Mongo URI:", MONGODB_URI);
       
           cached.promise = mongoose.connect(MONGODB_URI, {
             dbName: "rgis",

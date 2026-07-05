@@ -55,7 +55,8 @@ export default function MembershipPreview() {
               </div>
 
               <h3 className="mt-6 text-2xl font-bold">
-                {membership.title}
+                {/* {membership.title} */}
+                {membership.name}
               </h3>
 
               <p className="mt-3 text-blue-600 font-semibold">

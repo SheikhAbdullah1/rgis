@@ -58,19 +58,19 @@ export default function GrantCard({
     }
   };
 
-  const saveGrant = async () => {
-    await fetch("/api/saved-grants", {
-      method: "POST",
+  // const saveGrant = async () => {
+  //   await fetch("/api/saved-grants", {
+  //     method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
 
-      body: JSON.stringify({
-        grantId: grant._id,
-      }),
-    });
-  };
+  //     body: JSON.stringify({
+  //       grantId: grant._id,
+  //     }),
+  //   });
+  // };
 
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
@@ -121,12 +121,12 @@ export default function GrantCard({
         >
           {saving ? "Saving..." : isSaved ? "Saved ✓" : "Save Grant"}
         </button>
-        <button
+        {/* <button
           onClick={saveGrant}
           className="bg-blue-600 text-white px-3 py-2 rounded"
         >
           Save Grant
-        </button>
+        </button> */}
       </div>
     </div>
   );

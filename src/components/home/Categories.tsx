@@ -69,7 +69,7 @@ export default function Categories() {
             return (
               <Link
                 key={category.title}
-                href="/fundingOpportunities"
+                href="/funding-opportunities"
                 className="
                   rounded-2xl
                   border

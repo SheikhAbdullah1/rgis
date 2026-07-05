@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import LoginForm from "@/components/auth/LoginForm"
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function LoginPage() {
         // Normal registered user gets safely redirected to their dashboard hub
         router.push("/proposal-center/history"); 
       }
+      router.refresh();
 
     } catch (err) {
       setError("Failed to connect to the server.");

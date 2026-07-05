@@ -69,7 +69,8 @@ export default function NewsEvents() {
               </div>
 
               <Link
-                href="/news"
+                // href="/news"
+                href={`/news/${item.id}`}
                 className="mt-8 inline-block font-semibold text-blue-600 hover:underline"
               >
                 Read More →

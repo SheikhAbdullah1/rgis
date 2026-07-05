@@ -21,9 +21,9 @@ export default function AdminProposalsPage() {
       <h1 className="mb-8 text-3xl font-bold">Manage Proposals</h1>
 
       <AdminProposalTable />
-      <ExportExcel data={proposals} />
-
-      <ExportPDF data={proposals} />
+      {/* <ExportExcel data={proposals} />
+ */}
+      {/* <ExportPDF data={proposals} /> */}
     </main>
   );
 }

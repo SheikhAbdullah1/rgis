@@ -34,8 +34,11 @@ export default function FundingPage() {
   const filteredGrants = useMemo(() => {
     return grants.filter((grant) => {
       const matchesSearch =
-        grant.title?.toLowerCase().includes(search.toLowerCase()) ||
-        grant.agency?.toLowerCase().includes(search.toLowerCase());
+  grant.title?.toLowerCase().includes(search.toLowerCase()) ||
+  grant.agency?.name?.toLowerCase().includes(search.toLowerCase());
+      // const matchesSearch =
+      //   grant.title?.toLowerCase().includes(search.toLowerCase()) ||
+      //   grant.agency?.toLowerCase().includes(search.toLowerCase());
 
       const matchesCountry =
         country === "All Countries" || grant.country === country;

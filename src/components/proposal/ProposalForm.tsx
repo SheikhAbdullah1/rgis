@@ -132,7 +132,8 @@ export default function ProposalForm({ setFormCompleted }: ProposalFormProps) {
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       ];
-      if (file && !allowedTypes.includes(proposalFile.type))
+      // if (file && !allowedTypes.includes(proposalFile.type))
+      if (proposalFile && !allowedTypes.includes(proposalFile.type))
         newErrors.proposalFile = "Only PDF or Word documents are allowed.";
       else if (proposalFile.size > 10 * 1024 * 1024)
         newErrors.proposalFile = "File size must be less than 10MB.";

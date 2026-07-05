@@ -1,25 +1,25 @@
-// import AdminAgencyTable
-// from "@/components/admin/AdminAgencyTable";
+"use client";
 
-// export default function Page() {
-//   return (
-//     <main className="mx-auto max-w-7xl p-6">
-//       <h1 className="mb-8 text-3xl font-bold">
-//         Manage Agencies
-//       </h1>
-
-//       <AdminAgencyTable />
-//     </main>
-//   );
-// }
-
+import { useState } from "react";
 import AgencyForm from "@/components/admin/AgencyForm";
 import AdminAgencyTable from "@/components/admin/AdminAgencyTable";
 
 export default function AgenciesPage() {
+  const [showForm, setShowForm] = useState(false);
+
+  const fetchAgencies = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="space-y-8">
-      <AgencyForm />
+      {showForm && (
+        <AgencyForm
+          onClose={() => setShowForm(false)}
+          refresh={fetchAgencies}
+        />
+      )}
+
       <AdminAgencyTable />
     </div>
   );

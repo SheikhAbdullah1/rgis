@@ -5,7 +5,3 @@ export interface Proposal {
     createdAt: string;
     trackingId: string;
   }
-
-
-  const [proposal, setProposal] =
-  useState<Proposal | null>(null);

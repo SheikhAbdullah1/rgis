@@ -1,29 +1,3 @@
-// "use client";
-
-// import GrantCard from "./GrantCard";
-
-// interface GrantGridProps {
-//   grants: typeof import("@/data/grants").grants;
-// }
-
-// export default function GrantGrid({
-//   grants,
-// }: GrantGridProps) {
-//   return (
-//     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-//       {grants.map((grant) => (
-//         <GrantCard
-//           key={grant.id}
-//           title={grant.title}
-//           agency={grant.agency}
-//           amount={grant.amount}
-//           deadline={grant.deadline}
-//         />
-//       ))}
-//     </div>
-//   );
-// }
-
 "use client";
 
 import GrantCard from "./GrantCard";
@@ -32,7 +6,7 @@ interface Grant {
   _id?: string;
   id?: number;
   title: string;
-  agency: string;
+  agency: string | { name: string; _id?: string };
   amount: string;
   deadline: string;
   category?: string;
@@ -59,7 +33,9 @@ export default function GrantGrid({ grants }: GrantGridProps) {
         <GrantCard
           key={grant._id ?? grant.id ?? index}
           title={grant.title}
-          agency={grant.agency}
+          // agency={grant.agency}
+          // agency={grant.agency?.name || ""}
+          agency={typeof grant.agency === "string" ? grant.agency : grant.agency?.name || "N/A"}
           amount={grant.amount}
           deadline={grant.deadline}
           category={grant.category}

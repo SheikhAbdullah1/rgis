@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Proposal from "@/models/Proposal";
+import Notification from "@/models/Notification";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { sendEmail } from "@/lib/sendEmail";
 import { cookies } from "next/headers";
-// import { Notification } from "@/models/Notification";
+
 // export default mongoose.models.Notification ||
 // mongoose.model("Notification", NotificationSchema);
 export async function GET() {

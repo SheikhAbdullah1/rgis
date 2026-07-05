@@ -1,115 +1,51 @@
-// import Link from "next/link";
+interface Agency {
+  _id: string;
+  name: string;
+  country?: string;
+  description?: string;
+  website?: string;
+  fundingTypes?: string[];
+  focusAreas?: string[];
+}
 
-// interface Props {
-//   agency: any;
-// }
+interface AgencyCardProps {
+  agency: Agency;
+}
 
-// export default function AgencyCard({ agency }: Props) {
-//   if (!agency) return null;
-
-//   return (
-//     <div className="rounded-xl border p-6 shadow-sm">
-
-//       {agency.logo && (
-//         <img
-//           src={agency.logo}
-//           alt={agency.name}
-//           className="mb-4 h-16 w-16 rounded-full object-cover"
-//         />
-//       )}
-
-//       <h2 className="text-2xl font-bold">{agency.name}</h2>
-//       <p className="mt-2 text-gray-500">{agency.country}</p>
-//       <p className="mt-4 line-clamp-3">{agency.description}</p>
-
-//       <div className="mt-6 flex gap-3">
-//         {agency.website && (
-//           <a
-//             href={agency.website}
-//             target="_blank"
-//             rel="noopener noreferrer"
-//             className="rounded bg-blue-600 px-4 py-2 text-white"
-//           >
-//             Website
-//           </a>
-//         )}
-//         <Link
-//           href={`/funding-agencies/${agency._id}`}
-//           className="rounded border px-4 py-2"
-//         >
-//           Details
-//         </Link>
-//       </div>
-
-//       {agency.fundingTypes?.length > 0 && (
-//         <div className="mt-4 flex flex-wrap gap-2">
-//           {agency.fundingTypes.map((type: string) => (
-//             <span key={type} className="rounded-full bg-blue-100 px-3 py-1 text-sm">
-//               {type}
-//             </span>
-//           ))}
-//         </div>
-//       )}
-
-//       {agency.focusAreas?.length > 0 && (
-//         <div className="mt-4 flex flex-wrap gap-2">
-//           {agency.focusAreas.map((area: string) => (
-//             <span key={area} className="rounded-full bg-green-100 px-3 py-1 text-sm">
-//               {area}
-//             </span>
-//           ))}
-//         </div>
-//       )}
-
-//     </div>
-//   );
-// }
-
-import AgencyCard from "./AgencyCard";
-
-const agencies = [
-  {
-    _id: "1",
-    name: "Higher Education Commission Pakistan",
-    country: "Pakistan",
-    description: "HEC is the apex regulatory body for higher education in Pakistan.",
-    website: "https://www.hec.gov.pk",
-    fundingTypes: ["Research Grants", "Scholarships"],
-    focusAreas: ["Education", "Research"],
-  },
-  {
-    _id: "2",
-    name: "UNESCO",
-    country: "International",
-    description: "UNESCO promotes international cooperation in education, sciences and culture.",
-    website: "https://www.unesco.org",
-    fundingTypes: ["Education Grants", "Research Grants"],
-    focusAreas: ["Education", "Culture", "Science"],
-  },
-  {
-    _id: "3",
-    name: "World Bank",
-    country: "International",
-    description: "World Bank provides financial and technical assistance to developing countries.",
-    website: "https://www.worldbank.org",
-    fundingTypes: ["Development Grants", "Research Grants"],
-    focusAreas: ["Development", "Education", "Health"],
-  },
-];
-
-export default function AgencySection() {
+export default function AgencyCard({ agency }: AgencyCardProps) {
   return (
-    <section className="py-16">
-      <h2 className="mb-8 text-3xl font-bold">Funding Agencies</h2>
+    <div className="rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+      <h3 className="text-xl font-bold">{agency.name}</h3>
+      {agency.country && (
+        <p className="mt-1 text-sm text-gray-500">{agency.country}</p>
+      )}
+      {agency.description && (
+        <p className="mt-4 text-gray-600 line-clamp-3">{agency.description}</p>
+      )}
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {agencies.map((agency) => (
-          <AgencyCard
-            key={agency._id}
-            agency={agency}
-          />
-        ))}
-      </div>
-    </section>
+      {agency.fundingTypes && agency.fundingTypes.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {agency.fundingTypes.map((type) => (
+            <span
+              key={type}
+              className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700"
+            >
+              {type}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {agency.website && (
+        
+        <a  href={agency.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-block font-semibold text-blue-600 hover:underline"
+        >
+          Visit Website →
+        </a>
+      )}
+    </div>
   );
 }

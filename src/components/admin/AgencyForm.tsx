@@ -88,13 +88,13 @@ export default function AgencyForm({
       fundingTypes:
         form.fundingTypes
           .split(",")
-          .map((x) => x.trim())
+          .map((x: string) => x.trim())
           .filter(Boolean),
   
       focusAreas:
         form.focusAreas
           .split(",")
-          .map((x) => x.trim())
+          .map((x: string) => x.trim())
           .filter(Boolean),
     };
   
