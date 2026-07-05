@@ -107,14 +107,14 @@ export default function SearchSection() {
             </Link>
 
             <Link
-              href="/fundingOpportunities"
+              href="/funding-opportunities"
               className="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700"
             >
               Fellowships
             </Link>
 
             <Link
-              href="/fundingOpportunities"
+              href="/funding-opportunities"
               className="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700"
             >
               Startup Funding

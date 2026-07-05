@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
-    "https://rgis.vercel.app";
+    "https://rgis.netlify.app";
 
   return [
     {
@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/trainingAcademy`,
+      url: `${baseUrl}/training-academy`,
       lastModified: new Date(),
     },
     {
@@ -26,11 +26,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/proposalCenter`,
+      url: `${baseUrl}/proposal-center`,
       lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/fundingOpportunities`,
+      url: `${baseUrl}/funding-opportunities`,
       lastModified: new Date(),
     },
   ];

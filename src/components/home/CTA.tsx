@@ -32,7 +32,7 @@ export default function CTA() {
           </Link>
 
           <Link
-            href="/proposalCenter"
+            href="/proposal-center"
             className="
               rounded-xl
               border
@@ -49,7 +49,7 @@ export default function CTA() {
           </Link>
 
           <Link
-            href="/fundingOpportunities"
+            href="/funding-opportunities"
             className="
               rounded-xl
               bg-blue-500
