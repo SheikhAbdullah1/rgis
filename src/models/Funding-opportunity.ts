@@ -12,11 +12,27 @@ required: true,
       mongoose.Schema.Types.ObjectId,
     ref: "Agency",
   },
-
+  researchAreas: [
+    {
+      type: String,
+    },
+  ],
+  
+  organizationTypes: [
+    {
+      type: String,
+    },
+  ],
+  
+  countries: [
+    {
+      type: String,
+    },
+  ],
   category: String,
   amount: String,
 
-  country: String,
+  // country: String,
 
   deadline: Date,
 
@@ -34,6 +50,11 @@ required: true,
     ],
     default: "Open",
   },
+  sdgs: [
+    {
+      type: Number,
+    },
+  ],
 },
 {
   timestamps: true,

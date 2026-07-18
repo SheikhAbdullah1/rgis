@@ -46,6 +46,26 @@ const UserSchema = new Schema(
         ref: "FundingOpportunity", // ✅ Relational mapping is correct
       },
     ],
+    researchAreas: [
+      {
+        type: String,
+      },
+    ],
+    
+    sdgs: [
+      {
+        type: Number,
+      },
+    ],
+    country: {
+      type: String,
+      default: "",
+    },
+    
+    organizationType: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: [

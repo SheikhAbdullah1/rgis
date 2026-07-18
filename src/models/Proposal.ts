@@ -1,78 +1,120 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
 const ProposalSchema = new Schema(
   {
-    role: String,
-    submissionType: String,
-  
-    title: String,
-    funding: String,
-    description: String,
-  
-    fullName: String,
-    email: String,
-    phone: String,
-    cnic: String,
-  
-    country: String,
-    website: String,
-    organization: String,
-  
-    agency: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Agency",
+    title: {
+      type: String,
+      required: true,
+      trim: true,
     },
-  
-    grant: {
-      type: mongoose.Schema.Types.ObjectId,
+
+    abstract: {
+      type: String,
+      required: true,
+    },
+
+    researchArea: {
+      type: String,
+      default: "",
+    },
+
+    fundingOpportunity: {
+      type: Schema.Types.ObjectId,
       ref: "FundingOpportunity",
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+
+    fundingAgency: {
+      type: Schema.Types.ObjectId,
+      ref: "Agency",
     },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },   
-  
-    abstract: String,
-    objectives: String,
-    budget: String,
-  
-    proposalFile: String,
-  
-    trackingId: {
-      type: String,
-      unique: true,
-      sparse: true, // Prevents duplicate null crashes on legacy data
-    },
-    status: {
-      type: String,
-      default: "Pending",
-    },
-  
-    comments: [
+
+    sdgs: [
       {
-        // text: String,
-        user: String,
-        message: String,
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
+        type: Number,
       },
     ],
+    adminComment:{
+      type:String,
+      default:""
+  },
+  
+  reviewedBy:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User"
+  },
+  
+  reviewedAt:Date,
+  
+  updatedAt:{
+      type:Date,
+      default:Date.now
+  },
+
+    budget: {
+      type: Number,
+      default: 0,
+    },
+    budgetItems: [
+      {
+        category: String,
+        item: String,
+        quantity: Number,
+        unitCost: Number,
+        total: Number,
+        remarks: String,
+      },
+    ],
+
+    duration: {
+      type: String,
+      default: "",
+    },
+
+    attachments: [
+      {
+        name: String,
+        url: String,
+      },
+    ],
+
+    status: {
+      type: String,
+      enum: [
+        "Draft",
+        "Submitted",
+        "Under Review",
+        "Revision Required",
+        "Approved",
+        "Rejected",
+        "Funded",
+        "Completed",
+      ],
+      default: "Draft",
+    },
+
+    remarks: {
+      type: String,
+      default: "",
+    },
+
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    reviewer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    submittedAt: Date,
+
+    approvedAt: Date,
   },
   {
     timestamps: true,
   }
-  );
+);
 
-export default
-  mongoose.models.Proposal ||
-  mongoose.model(
-    "Proposal",
-    ProposalSchema
-  );
+export default models.Proposal || model("Proposal", ProposalSchema);

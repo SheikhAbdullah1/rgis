@@ -73,3 +73,6 @@ function Show-Tree {
 }
 
 Show-Tree
+
+// run cmd for checking and updating
+node scripts/seed-resources.js

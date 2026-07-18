@@ -107,7 +107,7 @@ export async function POST(req: Request) {
 
     return response;
   } catch (error) {
-    console.error(error);
+    console.error("Login Error", error);
 
     return NextResponse.json(
       {

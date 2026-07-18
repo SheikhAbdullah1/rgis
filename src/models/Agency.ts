@@ -34,6 +34,11 @@ const AgencySchema = new Schema(
       enum: ["Active", "Inactive"],
       default: "Active",
     },
+      sdgs: [
+      {
+        type: Number,
+      }
+    ],
   },
   {
     timestamps: true,

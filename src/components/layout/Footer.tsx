@@ -1,12 +1,82 @@
+// import Link from "next/link";
+
+// export default function Footer() {
+//   return (
+//     <footer className="bg-slate-900 text-white mt-20">
+//       <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
+
+//         {/* Logo */}
+//         <div>
+//           <h2 className="text-2xl font-bold mb-4">RGIS</h2>
+//           <p className="text-slate-400">
+//             Research Grant Intelligence System helps researchers,
+//             universities and startups discover global funding
+//             opportunities.
+//           </p>
+//         </div>
+
+//         {/* Quick Links */}
+//         <div>
+//           <h3 className="font-semibold mb-4">Quick Links</h3>
+
+//           <ul className="space-y-2 text-slate-400">
+//             <li><Link href="/">Home</Link></li>
+//             <li><Link href="/funding-opportunities">Funding</Link></li>
+//             <li><Link href="/proposal-center">Proposal Center</Link></li>
+//             <li><Link href="/training-academy">Academy</Link></li>
+//           </ul>
+//         </div>
+
+//         {/* Services */}
+//         <div>
+//           <h3 className="font-semibold mb-4">Services</h3>
+
+//           <ul className="space-y-2 text-slate-400">
+//             <li>Grant Discovery</li>
+//             <li>AI Matching</li>
+//             <li>Proposal Writing</li>
+//             <li>Training Programs</li>
+//           </ul>
+//         </div>
+
+//         {/* Contact */}
+//         <div>
+//           <h3 className="font-semibold mb-4">Contact</h3>
+
+//           <ul className="space-y-2 text-slate-400">
+//             <li>Email: info@rgis.org</li>
+//             <li>Phone: +92 300 1234567</li>
+//             <li>Pakistan</li>
+//           </ul>
+//         </div>
+
+//       </div>
+
+//       <div className="border-t border-slate-800 py-6 text-center text-slate-500">
+//         © 2026 RGIS. All Rights Reserved.
+//       </div>
+//     </footer>
+//   );
+// }
+
+
+// Target path in project: src/components/layout/Footer.tsx
+// Changes from your original:
+// - Quick Links: added Events, Resources, Collaboration Hub, About
+// - Services: replaced the 4 placeholder strings with real, linked
+//   consultancy services (matching /consultancy-services)
+// - Added a "Company" column (About, Leadership, Collaborations, Partnership)
+//   — grid is now 5 columns on large screens, still 4 on medium, 1 on mobile
+
 import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer className="bg-slate-900 text-white mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-2 lg:grid-cols-5 gap-10">
 
         {/* Logo */}
-        <div>
+        <div className="lg:col-span-1">
           <h2 className="text-2xl font-bold mb-4">RGIS</h2>
           <p className="text-slate-400">
             Research Grant Intelligence System helps researchers,
@@ -24,6 +94,21 @@ export default function Footer() {
             <li><Link href="/funding-opportunities">Funding</Link></li>
             <li><Link href="/proposal-center">Proposal Center</Link></li>
             <li><Link href="/training-academy">Academy</Link></li>
+            <li><Link href="/events">Events</Link></li>
+            <li><Link href="/resources">Resources Library</Link></li>
+            <li><Link href="/collaboration-hub">Collaboration Hub</Link></li>
+          </ul>
+        </div>
+
+        {/* Company */}
+        <div>
+          <h3 className="font-semibold mb-4">Company</h3>
+
+          <ul className="space-y-2 text-slate-400">
+            <li><Link href="/about">About</Link></li>
+            <li><Link href="/leadership">Leadership</Link></li>
+            <li><Link href="/collaborations">Collaborations</Link></li>
+            <li><Link href="/partnership">Partnership</Link></li>
           </ul>
         </div>
 
@@ -32,10 +117,10 @@ export default function Footer() {
           <h3 className="font-semibold mb-4">Services</h3>
 
           <ul className="space-y-2 text-slate-400">
-            <li>Grant Discovery</li>
-            <li>AI Matching</li>
-            <li>Proposal Writing</li>
-            <li>Training Programs</li>
+            <li><Link href="/consultancy-services">Grant Proposal Writing</Link></li>
+            <li><Link href="/consultancy-services">Research Design</Link></li>
+            <li><Link href="/consultancy-services">Statistical Analysis</Link></li>
+            <li><Link href="/consultancy-services">Feasibility Studies</Link></li>
           </ul>
         </div>
 

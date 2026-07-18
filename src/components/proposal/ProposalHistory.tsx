@@ -1,110 +1,119 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
+interface Proposal {
+  _id: string;
+  trackingId: string;
+  title: string;
+  funding?: string;
+  submissionType: string;
+  status: string;
+  createdAt: string;
+}
 
 export default function ProposalHistory() {
-  const [proposals, setProposals] = useState<any[]>([]);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   fetch("/api/my-proposals")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.success) setProposals(data.proposals);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }, []);
   useEffect(() => {
-    const loadProposals = async () => {
-      try {
-        const res = await fetch("/api/my-proposals");
-  
-        if (res.status === 401) {
-          setProposals([]);
-          return;
-        }
-  
-        if (!res.ok) {
-          console.error("Failed:", res.status);
-          return;
-        }
-  
-        const data = await res.json();
-  
-        if (data.success) {
-          setProposals(data.proposals || []);
-        }
-      } catch (err) {
-        console.error("Proposal fetch error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
     loadProposals();
   }, []);
-  
+
+  async function loadProposals() {
+    try {
+      const res = await fetch("/api/proposals");
+
+      if (res.status === 401) {
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        setProposals(data.proposals);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (loading) {
-    return <p className="text-gray-500 py-4">Loading proposals...</p>;
+    return (
+      <div className="py-10 text-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!proposals.length) {
+    return (
+      <div className="rounded-xl border p-10 text-center">
+        <h2 className="text-xl font-semibold">
+          No proposals found.
+        </h2>
+      </div>
+    );
   }
 
   return (
-    <div className="rounded-xl border bg-white p-6">
-      <h2 className="text-2xl font-bold mb-6">Proposal History</h2>
+    <div className="overflow-x-auto rounded-xl border">
+      <table className="min-w-full">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="p-4 text-left">Tracking ID</th>
+            <th className="p-4 text-left">Title</th>
+            <th className="p-4 text-left">Funding</th>
+            <th className="p-4 text-left">Status</th>
+            <th className="p-4 text-left">Date</th>
+            <th className="p-4 text-center">Action</th>
+          </tr>
+        </thead>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="p-4">Tracking ID</th>
-              <th className="p-4">Title</th>
-              <th className="p-4">Applicant</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">File</th>
+        <tbody>
+          {proposals.map((proposal) => (
+            <tr
+              key={proposal._id}
+              className="border-t"
+            >
+              <td className="p-4">
+                {proposal.trackingId}
+              </td>
+
+              <td className="p-4">
+                {proposal.title}
+              </td>
+
+              <td className="p-4">
+                {proposal.funding || "-"}
+              </td>
+
+              <td className="p-4">
+                {proposal.status}
+              </td>
+
+              <td className="p-4">
+                {new Date(
+                  proposal.createdAt
+                ).toLocaleDateString()}
+              </td>
+
+              <td className="p-4 text-center">
+                <Link
+                  href={`/proposal-center/view/${proposal._id}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </Link>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {proposals.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="p-8 text-center text-gray-500">
-                  No proposals found.
-                </td>
-              </tr>
-            ) : (
-              proposals.map((proposal) => (
-                <tr key={proposal._id} className="border-t">
-                  <td className="p-4 font-medium">{proposal.trackingId}</td>
-                  <td className="p-4">{proposal.title}</td>
-                  <td className="p-4">{proposal.fullName}</td>
-                  <td className="p-4">
-                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${
-                      proposal.status === "Approved"
-                        ? "bg-green-100 text-green-700"
-                        : proposal.status === "Rejected"
-                        ? "bg-red-100 text-red-700"
-                        : proposal.status === "Under Review"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}>
-                      {proposal.status}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    {new Date(proposal.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="p-4">
-                    {proposal.proposalFile ? (
-                      <a href={proposal.proposalFile} target="_blank"
-                        className="text-blue-600 underline">View</a>
-                    ) : "—"}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
