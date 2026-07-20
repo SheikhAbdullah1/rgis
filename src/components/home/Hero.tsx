@@ -375,12 +375,22 @@ export default function Hero() {
 
       <div
         className="hero-grid"
+        // style={{
+        //   display: "grid",
+        //   gridTemplateColumns: "1.1fr 0.9fr",
+        //   alignItems: "center",
+        //   gap: "2rem",
+        //   padding: "clamp(2rem, 6vw, 5rem)",
+        //   padding: "clamp(2rem, 6vw, 3rem)",
+        //   minHeight: "500px",
+        // }}
         style={{
           display: "grid",
           gridTemplateColumns: "1.1fr 0.9fr",
           alignItems: "center",
           gap: "2rem",
-          padding: "clamp(2rem, 6vw, 5rem)",
+          padding: "clamp(2rem, 6vw, 3rem)",
+          paddingLeft: "clamp(4rem, 10vw, 8rem)",
           minHeight: "500px",
         }}
       >
@@ -400,7 +410,7 @@ export default function Hero() {
       </div>
 
       {/* Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0 clamp(2rem, 6vw, 5rem) 1.5rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0 clamp(2rem, 6vw, 5rem) 1.5rem", paddingLeft: "clamp(4rem, 8vw, 8rem)", }}>
         <button className="hero-arrow" onClick={prev} aria-label="Previous slide">
           <ArrowLeft size={16} />
         </button>
