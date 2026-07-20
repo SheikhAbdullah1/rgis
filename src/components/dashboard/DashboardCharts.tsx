@@ -3,106 +3,112 @@
 import { useEffect, useState } from "react";
 
 import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
-
-import { Pie, Bar } from "react-chartjs-2";
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement
-);
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    LineChart,
+    Line,
+} from "recharts";
 
 export default function DashboardCharts() {
-  const [stats, setStats] = useState<any>(null);
 
-  useEffect(() => {
-    fetch("/api/admin/stats")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setStats(data.stats);
+    const [monthly,setMonthly]=useState<any[]>([]);
+    const [funding,setFunding]=useState<any[]>([]);
+
+    useEffect(()=>{
+
+        async function load(){
+
+            const res=await fetch("/api/dashboard");
+            const data=await res.json();
+
+            setMonthly(data.monthly || []);
+            setFunding(data.funding || []);
+
         }
-      });
-  }, []);
 
-  if (!stats) {
-    return <p>Loading charts...</p>;
-  }
+        load();
 
-  const pieData = {
-    labels: [
-      "Pending",
-      "Under Review",
-      "Approved",
-      "Rejected",
-    ],
-    datasets: [
-      {
-        data: [
-          stats.pending,
-          stats.review,
-          stats.approved,
-          stats.rejected,
-        ],
-        backgroundColor: [
-          "#facc15",
-          "#3b82f6",
-          "#22c55e",
-          "#ef4444",
-        ],
-      },
-    ],
-  };
+    },[]);
 
-  const barData = {
-    labels: [
-      "Pending",
-      "Under Review",
-      "Approved",
-      "Rejected",
-    ],
-    datasets: [
-      {
-        label: "Proposals",
-        data: [
-          stats.pending,
-          stats.review,
-          stats.approved,
-          stats.rejected,
-        ],
-        backgroundColor: "#2563eb",
-      },
-    ],
-  };
+    return(
 
-  return (
-    <div className="mt-10 grid gap-8 lg:grid-cols-2">
-      <div className="rounded-xl border p-6">
-        <h2 className="mb-4 text-xl font-bold">
-          Proposal Status Distribution
-        </h2>
+        <div className="grid lg:grid-cols-2 gap-8">
 
-        <Pie data={pieData} />
-      </div>
+            <div className="rounded-xl border p-6 shadow-sm bg-white">
 
-      <div className="rounded-xl border p-6">
-        <h2 className="mb-4 text-xl font-bold">
-          Proposal Statistics
-        </h2>
+                <h2 className="text-xl font-bold mb-6">
 
-        <Bar data={barData} />
-      </div>
-    </div>
-  );
+                    Monthly Proposal Trend
+
+                </h2>
+
+                <div className="h-80">
+
+                    <ResponsiveContainer>
+
+                        <BarChart data={monthly}>
+
+                            <XAxis dataKey="_id.month"/>
+
+                            <YAxis/>
+
+                            <Tooltip/>
+
+                            <Legend/>
+
+                            <Bar
+                                dataKey="count"
+                            />
+
+                        </BarChart>
+
+                    </ResponsiveContainer>
+
+                </div>
+
+            </div>
+
+            <div className="rounded-xl border p-6 shadow-sm bg-white">
+
+                <h2 className="text-xl font-bold mb-6">
+
+                    Funding Trend
+
+                </h2>
+
+                <div className="h-80">
+
+                    <ResponsiveContainer>
+
+                        <LineChart data={funding}>
+
+                            <XAxis dataKey="_id.month"/>
+
+                            <YAxis/>
+
+                            <Tooltip/>
+
+                            <Legend/>
+
+                            <Line
+                                dataKey="requested"
+                            />
+
+                        </LineChart>
+
+                    </ResponsiveContainer>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    );
+
 }

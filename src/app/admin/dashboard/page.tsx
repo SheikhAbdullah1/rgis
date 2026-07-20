@@ -1,7 +1,7 @@
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import ProposalChart from "@/components/dashboard/ProposalChart";
 import RecentProposals from "@/components/dashboard/RecentProposals";
-
+import Recommendations from "@/components/dashboard/Recommendations";
 export default function DashboardPage() {
   return (
     <main className="mx-auto max-w-7xl p-6 space-y-8">
@@ -11,9 +11,13 @@ export default function DashboardPage() {
 
       <DashboardStats />
 
-      <ProposalChart />
+<ProposalChart />
 
-      <RecentProposals />
+<DashboardCharts />
+
+<Recommendations />
+
+<RecentProposals />
     </main>
   );
 }

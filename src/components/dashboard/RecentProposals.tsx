@@ -2,58 +2,133 @@
 
 import { useEffect, useState } from "react";
 
+interface Proposal {
+  _id: string;
+  trackingId: string;
+  title: string;
+  fullName: string;
+  status: string;
+  createdAt: string;
+}
+
 export default function RecentProposals() {
-  const [proposals, setProposals] =
-    useState<any[]>([]);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/proposals")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setProposals(
-            data.proposals.slice(0, 5)
-          );
-        }
-      });
+    loadRecent();
   }, []);
 
+  async function loadRecent() {
+    try {
+      const res = await fetch("/api/dashboard");
+      const data = await res.json();
+
+      if (data.success) {
+        setProposals(data.recentProposals || []);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        Loading recent proposals...
+      </div>
+    );
+  }
+
   return (
-    <div className="rounded-xl border p-6">
-      <h2 className="mb-6 text-xl font-bold">
-        Recent Proposals
-      </h2>
+    <div className="rounded-xl border bg-white shadow-sm">
+      <div className="border-b p-6">
+        <h2 className="text-xl font-bold">
+          Recent Proposals
+        </h2>
+      </div>
 
-      <div className="space-y-4">
-        {proposals.length === 0 ? (
-            <p className="text-gray-500 text-sm">
-            No proposals yet.
-            </p>
-        ) : (
-            proposals.map((p) => (
-            <div key={p._id} className="border-b pb-4">
-                <p className="font-semibold">{p.title}</p>
-                <p className="text-sm text-gray-500">{p.fullName}</p>
-            </div>
-            ))
-        )}
-        </div>
-      {/* <div className="space-y-4">
-        {proposals.map((p) => (
-          <div
-            key={p._id}
-            className="border-b pb-4"
-          >
-            <p className="font-semibold">
-              {p.title}
-            </p>
+      <div className="overflow-x-auto">
+        <table className="w-full">
 
-            <p className="text-sm text-gray-500">
-              {p.fullName}
-            </p>
-          </div>
-        ))}
-      </div> */}
+          <thead className="bg-gray-50">
+
+            <tr>
+
+              <th className="p-4 text-left">
+                Tracking ID
+              </th>
+
+              <th className="p-4 text-left">
+                Title
+              </th>
+
+              <th className="p-4 text-left">
+                Applicant
+              </th>
+
+              <th className="p-4 text-left">
+                Status
+              </th>
+
+              <th className="p-4 text-left">
+                Date
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {proposals.map((proposal) => (
+
+              <tr
+                key={proposal._id}
+                className="border-t"
+              >
+
+                <td className="p-4">
+                  {proposal.trackingId}
+                </td>
+
+                <td className="p-4">
+                  {proposal.title}
+                </td>
+
+                <td className="p-4">
+                  {proposal.fullName}
+                </td>
+
+                <td className="p-4">
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-sm font-medium
+                      ${
+                        proposal.status === "Approved"
+                          ? "bg-green-100 text-green-700"
+                          : proposal.status === "Rejected"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                  >
+                    {proposal.status}
+                  </span>
+
+                </td>
+
+                <td className="p-4">
+                  {new Date(proposal.createdAt).toLocaleDateString()}
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+      </div>
     </div>
   );
 }
