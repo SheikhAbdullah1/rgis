@@ -1,3 +1,5 @@
+// Target path in project: src/app/api/dashboard/route.ts
+
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 
@@ -18,30 +20,27 @@ export async function GET() {
       pending,
       approved,
       rejected,
+      submitted,
+      underReview,
+      recentProposals,
     ] = await Promise.all([
       User.countDocuments(),
       Agency.countDocuments(),
       Grant.countDocuments(),
       Proposal.countDocuments(),
-      // Proposal.countDocuments({ status: "Pending" }),
-      // Proposal.countDocuments({ status: "Approved" }),
-      // Proposal.countDocuments({ status: "Rejected" }),
+      Proposal.countDocuments({ status: "Pending" }),
+      Proposal.countDocuments({ status: "Approved" }),
+      Proposal.countDocuments({ status: "Rejected" }),
+      Proposal.countDocuments({ status: "Submitted" }),
+      Proposal.countDocuments({ status: "Under Review" }),
+      Proposal.find()
+        .populate("agency", "name")
+        .populate("grant", "title")
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .lean(),
     ]);
-    const submitted = await Proposal.countDocuments({
-      status: "Submitted",
-    });
-    
-    const underReview = await Proposal.countDocuments({
-      status: "Under Review",
-    });
-    
-    const approved = await Proposal.countDocuments({
-      status: "Approved",
-    });
-    
-    const rejected = await Proposal.countDocuments({
-      status: "Rejected",
-    });
+
     const successRate =
       totalProposals === 0
         ? 0
@@ -202,15 +201,6 @@ export async function GET() {
       },
     ]);
 
-    /* ---------------- Recent Proposals ---------------- */
-
-    // const recentProposals = await Proposal.find()
-    //   .populate("agency", "name")
-    //   .populate("grant", "title")
-    //   .sort({ createdAt: -1 })
-    //   .limit(10)
-    //   .lean();
-
     /* ---------------- Dashboard Stats ---------------- */
 
     const stats = {
@@ -221,6 +211,8 @@ export async function GET() {
       pending,
       approved,
       rejected,
+      submitted,
+      underReview,
       successRate,
     };
 
@@ -248,3 +240,4 @@ export async function GET() {
     );
   }
 }
+
