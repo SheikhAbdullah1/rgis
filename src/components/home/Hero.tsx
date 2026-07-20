@@ -1,134 +1,4 @@
-// import Link from "next/link";
-
-// export default function Hero() {
-//   return (
-//     <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-700 to-indigo-700 text-white">
-//       <div className="mx-auto max-w-7xl px-6 py-24 lg:py-36">
-//         <div className="grid items-center gap-16 lg:grid-cols-2">
-//           {/* Left Content */}
-//           <div>
-//             <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium">
-//               Research Grant Intelligence System (RGIS)
-//             </span>
-
-//             <h1 className="mt-8 text-5xl font-bold leading-tight lg:text-6xl">
-//               Discover Funding.
-//               <br />
-//               Develop Proposals.
-//               <br />
-//               Transform Research.
-//             </h1>
-
-//             <p className="mt-8 max-w-2xl text-lg text-blue-100">
-//               RGIS is a comprehensive funding intelligence
-//               platform connecting researchers, startups,
-//               universities, NGOs, and innovators with grants,
-//               scholarships, fellowships, and funding
-//               opportunities worldwide.
-//             </p>
-
-//             {/* CTA Buttons */}
-//             <div className="mt-10 flex flex-wrap gap-4">
-//               <Link
-//                 href="/funding-opportunities"
-//                 className="
-//                   rounded-xl
-//                   bg-white
-//                   px-6
-//                   py-3
-//                   font-semibold
-//                   text-blue-700
-//                   transition
-//                   hover:bg-gray-100
-//                 "
-//               >
-//                 Explore Funding
-//               </Link>
-
-//               <Link
-//                 href="/proposal-center"
-//                 className="
-//                   rounded-xl
-//                   border
-//                   border-white
-//                   px-6
-//                   py-3
-//                   font-semibold
-//                   transition
-//                   hover:bg-white
-//                   hover:text-blue-700
-//                 "
-//               >
-//                 Submit Proposal
-//               </Link>
-
-//               <Link
-//                 href="/membership"
-//                 className="
-//                   rounded-xl
-//                   bg-blue-500
-//                   px-6
-//                   py-3
-//                   font-semibold
-//                   transition
-//                   hover:bg-blue-400
-//                 "
-//               >
-//                 Become a Member
-//               </Link>
-//             </div>
-//           </div>
-
-//           {/* Right Side */}
-//           <div className="grid grid-cols-2 gap-6">
-//             <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
-//               <h3 className="text-4xl font-bold">
-//                 500+
-//               </h3>
-
-//               <p className="mt-2 text-blue-100">
-//                 Funding Opportunities
-//               </p>
-//             </div>
-
-//             <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
-//               <h3 className="text-4xl font-bold">
-//                 100+
-//               </h3>
-
-//               <p className="mt-2 text-blue-100">
-//                 Funding Agencies
-//               </p>
-//             </div>
-
-//             <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
-//               <h3 className="text-4xl font-bold">
-//                 1000+
-//               </h3>
-
-//               <p className="mt-2 text-blue-100">
-//                 Researchers Connected
-//               </p>
-//             </div>
-
-//             <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
-//               <h3 className="text-4xl font-bold">
-//                 50+
-//               </h3>
-
-//               <p className="mt-2 text-blue-100">
-//                 Training Programs
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
 "use client";
-// import Link from "next/link";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
@@ -148,14 +18,26 @@ import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
  *            makes between a researcher and an opportunity.
  * ---------------------------------------------------------
  * Drop-in notes for Next.js:
- *  - Add "use client" at the top of the file.
- *  - Swap the <a href> CTAs for <Link href="..."> from "next/link".
+ *  - Swap the <a href> CTAs for <Link href="..."> from "next/link" once
+ *    your real routes are wired in (currently placeholder "#" anchors).
  *  - Load fonts via next/font (Fraunces, Inter, IBM Plex Mono) and wire
  *    the CSS variables below to those font objects, or keep the Google
- *    Fonts <link> approach in _document / layout.
+ *    Fonts <link> approach in layout.tsx.
  */
 
-const SLIDES = [
+type MotifType = "globe" | "seals" | "match" | "institutions" | "path";
+
+interface Slide {
+  id: string;
+  eyebrow: string;
+  headline: string;
+  body: string;
+  cta: { label: string; href: string };
+  secondary: { label: string; href: string };
+  motif: MotifType;
+}
+
+const SLIDES: Slide[] = [
   {
     id: "global",
     eyebrow: "01 — Worldwide Reach",
@@ -205,12 +87,12 @@ const SLIDES = [
 
 const AUTO_ADVANCE_MS = 7000;
 
-function useReducedMotion() {
+function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduced(mq.matches);
-    const handler = (e) => setReduced(e.matches);
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
@@ -219,7 +101,7 @@ function useReducedMotion() {
 
 /* ---------- Signature motif: node-network SVGs, one per theme ---------- */
 
-function NodeMotif({ type, reduced }) {
+function NodeMotif({ type, reduced }: { type: MotifType; reduced: boolean }) {
   const cls = reduced ? "" : "motif-animate";
   switch (type) {
     case "globe":
@@ -229,10 +111,12 @@ function NodeMotif({ type, reduced }) {
           <ellipse cx="300" cy="300" rx="190" ry="70" className="motif-ring-thin" />
           <ellipse cx="300" cy="300" rx="190" ry="130" className="motif-ring-thin" />
           <line x1="110" y1="300" x2="490" y2="300" className="motif-ring-thin" />
-          {[
-            [300, 110], [430, 190], [470, 340], [370, 470],
-            [210, 460], [130, 320], [180, 170], [300, 490],
-          ].map(([x, y], i) => (
+          {(
+            [
+              [300, 110], [430, 190], [470, 340], [370, 470],
+              [210, 460], [130, 320], [180, 170], [300, 490],
+            ] as [number, number][]
+          ).map(([x, y], i) => (
             <g key={i}>
               <line x1="300" y1="300" x2={x} y2={y} className="motif-line" style={{ animationDelay: `${i * 0.18}s` }} />
               <circle cx={x} cy={y} r="6" className="motif-node" style={{ animationDelay: `${i * 0.18}s` }} />
@@ -255,7 +139,9 @@ function NodeMotif({ type, reduced }) {
           <line x1="220" y1="230" x2="390" y2="210" className="motif-line" />
           <line x1="220" y1="230" x2="360" y2="380" className="motif-line" style={{ animationDelay: "0.2s" }} />
           <line x1="360" y1="380" x2="190" y2="400" className="motif-line" style={{ animationDelay: "0.4s" }} />
-          {[[220, 230], [390, 210], [360, 380], [190, 400]].map(([x, y], i) => (
+          {(
+            [[220, 230], [390, 210], [360, 380], [190, 400]] as [number, number][]
+          ).map(([x, y], i) => (
             <circle key={i} cx={x} cy={y} r="7" className="motif-node" style={{ animationDelay: `${i * 0.2}s` }} />
           ))}
         </svg>
@@ -282,7 +168,7 @@ function NodeMotif({ type, reduced }) {
       return (
         <svg viewBox="0 0 600 600" className={`motif ${cls}`} aria-hidden="true">
           {(() => {
-            const pts = [];
+            const pts: [number, number][] = [];
             const cx = 300, cy = 300, r = 150;
             for (let i = 0; i < 6; i++) {
               const a = (Math.PI / 3) * i - Math.PI / 2;
@@ -311,7 +197,9 @@ function NodeMotif({ type, reduced }) {
       return (
         <svg viewBox="0 0 600 600" className={`motif ${cls}`} aria-hidden="true">
           {(() => {
-            const pts = [[80, 470], [190, 400], [270, 430], [360, 300], [440, 320], [520, 150]];
+            const pts: [number, number][] = [
+              [80, 470], [190, 400], [270, 430], [360, 300], [440, 320], [520, 150],
+            ];
             return (
               <>
                 <polyline points={pts.map((p) => p.join(",")).join(" ")} className="motif-path" />
@@ -328,20 +216,25 @@ function NodeMotif({ type, reduced }) {
 
 /* ---------------------------- Main component ---------------------------- */
 
-export default function HeroSlider() {
+export default function Hero() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const reduced = useReducedMotion();
-  const timerRef = useRef(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const goTo = useCallback((i) => setIndex(((i % SLIDES.length) + SLIDES.length) % SLIDES.length), []);
+  const goTo = useCallback(
+    (i: number) => setIndex(((i % SLIDES.length) + SLIDES.length) % SLIDES.length),
+    []
+  );
   const next = useCallback(() => goTo(index + 1), [index, goTo]);
   const prev = useCallback(() => goTo(index - 1), [index, goTo]);
 
   useEffect(() => {
     if (!playing || reduced) return;
     timerRef.current = setTimeout(next, AUTO_ADVANCE_MS);
-    return () => clearTimeout(timerRef.current);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [index, playing, reduced, next]);
 
   const slide = SLIDES[index];
