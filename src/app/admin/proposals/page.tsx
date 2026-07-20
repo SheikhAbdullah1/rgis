@@ -1,33 +1,4 @@
-// // import AdminProposalTable from "@/components/AdminProposalTable";
-
-// // export default function AdminProposalsPage() {
-// //   return (
-// //     <main className="mx-auto max-w-7xl p-6">
-// //       <h1 className="mb-8 text-3xl font-bold">Manage Proposals</h1>
-
-// //       <AdminProposalTable />
-// //       <ExportExcel data={proposals} />
-
-// //       <ExportPDF data={proposals} />
-// //     </main>
-// //   );
-// // }
-
-// import AdminProposalTable from "@/components/AdminProposalTable";
-
-// export default function AdminProposalsPage() {
-//   return (
-//     <main className="mx-auto max-w-7xl p-6">
-//       <h1 className="mb-8 text-3xl font-bold">Manage Proposals</h1>
-
-//       <AdminProposalTable />
-//       {/* <ExportExcel data={proposals} />
-//  */}
-//       {/* <ExportPDF data={proposals} /> */}
-//     </main>
-//   );
-// }
-
+// Target path in project: src/app/admin/proposals/page.tsx
 
 import AdminProposalTable from "@/components/AdminProposalTable";
 
@@ -46,52 +17,14 @@ export default function AdminProposalsPage() {
         </p>
       </div>
 
-      {/* Statistics */}
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
-          <h3 className="text-sm text-gray-500">
-            Total Proposals
-          </h3>
-
-          <p className="mt-3 text-3xl font-bold">
-            --
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-yellow-50 p-6 shadow-sm">
-          <h3 className="text-sm text-gray-600">
-            Pending Review
-          </h3>
-
-          <p className="mt-3 text-3xl font-bold text-yellow-700">
-            --
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-green-50 p-6 shadow-sm">
-          <h3 className="text-sm text-gray-600">
-            Approved
-          </h3>
-
-          <p className="mt-3 text-3xl font-bold text-green-700">
-            --
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-red-50 p-6 shadow-sm">
-          <h3 className="text-sm text-gray-600">
-            Rejected
-          </h3>
-
-          <p className="mt-3 text-3xl font-bold text-red-700">
-            --
-          </p>
-        </div>
-
-      </div>
-
-      {/* Proposal Table */}
+      {/*
+        Note: live stats (Total/Pending/Approved/Rejected + Users/Grants/
+        Agencies/Success Rate) are rendered inside AdminProposalTable via
+        the <DashboardStats /> component, which fetches real data from
+        /api/dashboard. A separate hardcoded stats block used to sit here
+        showing permanent "--" placeholders — removed to avoid two
+        conflicting stat displays on the same page.
+      */}
 
       <AdminProposalTable />
 

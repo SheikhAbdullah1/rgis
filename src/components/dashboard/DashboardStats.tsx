@@ -1,3 +1,4 @@
+// Target path in project: src/components/dashboard/DashboardStats.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,21 +17,46 @@ interface Stats {
 export default function DashboardStats() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorDetail, setErrorDetail] = useState<string>("");
 
   useEffect(() => {
     async function loadStats() {
       try {
         const res = await fetch("/api/dashboard");
+        const text = await res.text();
 
         if (!res.ok) {
-          throw new Error("Failed to load dashboard");
+          // Surface the real status + body instead of swallowing it —
+          // makes the actual server error visible in the UI.
+          setErrorDetail(`HTTP ${res.status}: ${text.slice(0, 500)}`);
+          setLoading(false);
+          return;
         }
 
-        const data = await res.json();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          setErrorDetail(
+            `Response was not valid JSON: ${text.slice(0, 500)}`,
+          );
+          setLoading(false);
+          return;
+        }
+
+        if (!data.success) {
+          setErrorDetail(
+            data.message || "API returned success: false with no message.",
+          );
+          setLoading(false);
+          return;
+        }
 
         setStats(data.stats);
       } catch (err) {
-        console.error(err);
+        setErrorDetail(
+          err instanceof Error ? err.message : "Unknown fetch error.",
+        );
       } finally {
         setLoading(false);
       }
@@ -55,7 +81,12 @@ export default function DashboardStats() {
   if (!stats) {
     return (
       <div className="rounded-xl border bg-red-50 p-6 text-red-600">
-        Failed to load dashboard statistics.
+        <p className="font-semibold">Failed to load dashboard statistics.</p>
+        {errorDetail && (
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-words rounded bg-red-100 p-3 text-xs text-red-800">
+            {errorDetail}
+          </pre>
+        )}
       </div>
     );
   }

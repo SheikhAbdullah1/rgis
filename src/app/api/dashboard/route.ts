@@ -22,7 +22,6 @@ export async function GET() {
       rejected,
       submitted,
       underReview,
-      recentProposals,
     ] = await Promise.all([
       User.countDocuments(),
       Agency.countDocuments(),
@@ -33,13 +32,31 @@ export async function GET() {
       Proposal.countDocuments({ status: "Rejected" }),
       Proposal.countDocuments({ status: "Submitted" }),
       Proposal.countDocuments({ status: "Under Review" }),
-      Proposal.find()
+    ]);
+
+    // Isolated from the stats above: if `agency`/`grant` aren't populatable
+    // on the current Proposal schema, this fails without taking down the
+    // whole endpoint — recentProposals just comes back empty instead.
+    let recentProposals: unknown[] = [];
+    try {
+      recentProposals = await Proposal.find()
         .populate("agency", "name")
         .populate("grant", "title")
         .sort({ createdAt: -1 })
         .limit(10)
-        .lean(),
-    ]);
+        .lean();
+    } catch (populateError) {
+      console.error("recentProposals populate failed:", populateError);
+      try {
+        // Fallback: same query, no populate — at least return raw IDs.
+        recentProposals = await Proposal.find()
+          .sort({ createdAt: -1 })
+          .limit(10)
+          .lean();
+      } catch (fallbackError) {
+        console.error("recentProposals fallback failed:", fallbackError);
+      }
+    }
 
     const successRate =
       totalProposals === 0
@@ -229,10 +246,16 @@ export async function GET() {
   } catch (error) {
     console.error(error);
 
+    // TEMPORARY: surfacing the real error for diagnosis. Revert to the
+    // generic message once the root cause is found and fixed.
     return NextResponse.json(
       {
         success: false,
         message: "Failed to load dashboard analytics.",
+        debug:
+          error instanceof Error
+            ? { name: error.name, message: error.message, stack: error.stack }
+            : String(error),
       },
       {
         status: 500,
@@ -240,4 +263,3 @@ export async function GET() {
     );
   }
 }
-
